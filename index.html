@@ -18,6 +18,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;}
+/* HEADER */
 .hdr{height:52px;background:linear-gradient(90deg,#050810,#09111e,#050810);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;position:relative;z-index:1000;}
 .hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(40,120,240,.4),rgba(30,201,110,.4),rgba(40,120,240,.4),transparent);}
 .hdr-brand{display:flex;align-items:center;gap:12px;}
@@ -28,10 +29,50 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .live-pill{display:flex;align-items:center;gap:5px;font-size:10px;padding:3px 10px;border-radius:20px;background:rgba(30,201,110,.08);color:var(--green);border:1px solid rgba(30,201,110,.2);}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-.hdr-date{font-family:var(--mono);font-size:13px;color:var(--muted2);}
+.hdr-date{font-family:var(--mono);font-size:11px;color:var(--muted2);}
 .reset-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:10px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s;}
 .reset-btn:hover{background:var(--bg3);color:#fff;border-color:var(--blue);}
+/* APP */
 .app{display:grid;grid-template-columns:400px 1fr 380px;height:calc(100vh - 52px);}
+/* DETAIL (LEFT) */
+.detail{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.dp-hdr{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dp-title{font-size:14px;font-weight:700;}
+.dp-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+.parts-scroll{flex:1;overflow-y:auto;padding:8px;}
+/* FIELD ROWS */
+.field-row{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .15s;border-radius:4px;}
+.field-row.highlighted{background:rgba(40,120,240,.08);border-color:rgba(40,120,240,.2);}
+.field-row:last-child{border-bottom:none;}
+.field-top{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:0 4px;}
+.field-lbl{font-size:13px;font-weight:700;color:#fff;flex:1;text-transform:uppercase;letter-spacing:.2px;}
+.field-unit{font-size:12px;color:#fff;font-weight:700;background:var(--bg4);padding:1px 5px;border-radius:3px;}
+.field-nums{display:flex;gap:6px;margin-bottom:4px;padding:0 4px;}
+.field-num{flex:1;background:var(--bg4);border-radius:5px;padding:7px;text-align:center;transition:border .15s;border:1px solid transparent;}
+.field-num:hover,.field-num.active{border:1.5px solid #2878f0;}
+.field-num.active{border:1.5px solid #2878f0;}
+.fn-lbl{font-size:11px;color:#d4d0d0;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
+.fn-val{font-family:var(--mono);font-size:13px;font-weight:700;}
+.fn-exec{color:var(--green);}
+.fn-fw{color:var(--orange);}
+.field-bar{height:5px;background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 100%);border-radius:99px;overflow:hidden;margin:0 4px;}
+.field-fill{height:100%;border-radius:99px;background:var(--border2);transition:width .6s cubic-bezier(.4,0,.2,1);float:right;width:calc(100% - ${pct}%);}
+.field-pct{font-family:var(--mono);font-size:11px;font-weight:700;text-align:right;margin-top:2px;padding:0 4px;}
+/* PART CARDS */
+.part-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.part-card.active{border-color:var(--pc);box-shadow:0 0 0 1px color-mix(in srgb,var(--pc) 20%,transparent);}
+.pc-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;user-select:none;}
+.pc-hdr:hover{background:rgba(255,255,255,.02);}
+.pc-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.pc-name{font-size:13px;font-weight:700;flex:1;}
+.pc-td{font-size:10px;color:var(--muted2);font-family:var(--mono);}
+.pc-toggle{font-size:10px;color:var(--muted2);margin-left:4px;}
+.pc-body{padding:4px 12px 10px;border-top:1px solid var(--border);}
+.pc-body.collapsed{display:none;}
+/* FILTER BADGE */
+.filter-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;background:rgba(40,120,240,.12);color:var(--blue);border:1px solid rgba(40,120,240,.25);margin-bottom:8px;cursor:pointer;}
+.filter-badge:hover{background:rgba(40,120,240,.2);}
+/* NAV (RIGHT) */
 .nav{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .sec-lbl{font-size:10px;color:#fff;opacity:.5;text-transform:uppercase;letter-spacing:.8px;font-weight:700;}
 .zone-wrap{padding:10px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -40,23 +81,33 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .zone-btn:hover{background:var(--bg3);color:#fff;}
 .zone-btn.on{background:rgba(40,120,240,.12);color:#fff;border-color:var(--blue);}
 .zone-btn.on .zone-dot{background:var(--blue);}
-.zone-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .15s;}
+.zone-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;}
 .zone-eng{font-size:11px;flex:1;}
 .zone-count{font-family:var(--mono);font-size:10px;color:var(--muted2);}
-.loc-wrap{flex:1;overflow-y:auto;padding:0;}
-.loc-sec{padding:8px 13px 4px;font-size:10px;color:#fff;opacity:.7;text-transform:uppercase;letter-spacing:.8px;font-weight:700;border-top:1px solid var(--border);margin-top:4px;}
-.loc-btn{display:flex;align-items:center;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;position:relative;}
+.loc-wrap{flex:1;overflow-y:auto;}
+
+/* LOCATION ITEM */
+.loc-item{border-bottom:1px solid var(--border);}
+.loc-btn{display:flex;align-items:center;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
 .loc-btn:hover{background:var(--bg3);}
 .loc-btn.active{background:rgba(40,120,240,.1);}
 .loc-btn.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2878f0,#1ec96e);border-radius:3px 0 0 3px;}
 .loc-ico{width:26px;height:26px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border2);flex-shrink:0;}
 .loc-info{flex:1;min-width:0;text-align:right;}
-.loc-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.loc-name-txt{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .loc-meta{font-size:10px;color:var(--muted2);margin-top:1px;}
+/* PARTS UNDER LOCATION */
+.loc-parts{display:none;padding:6px 13px 8px;background:var(--bg3);border-top:1px solid var(--border);}
+.loc-parts.open{display:flex;flex-wrap:wrap;gap:5px;}
+.part-pill{padding:3px 10px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--mono);border:1px solid transparent;transition:all .15s;}
+.part-pill:hover{filter:brightness(1.2);}
+.part-pill.active-part{box-shadow:0 0 0 2px #fff3;}
+/* BASEMAP */
 .bm-wrap{padding:9px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .bm-btns{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
 .bm-btn{padding:3px 8px;border-radius:4px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:9px;cursor:pointer;font-family:var(--font);transition:all .15s;font-weight:600;}
 .bm-btn:hover,.bm-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+/* CENTER */
 .center{display:flex;flex-direction:column;overflow:hidden;}
 .map-wrap{flex:1;padding:8px 10px 10px;min-height:0;}
 .map-panel{height:100%;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:flex;flex-direction:column;}
@@ -66,41 +117,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .mleg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted2);}
 .mleg-d{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
 .map-info{font-size:10px;color:var(--muted2);font-family:var(--mono);}
+.hide-parts-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:9px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s;}
+.hide-parts-btn:hover{border-color:var(--blue);color:#fff;}
+/* LEAFLET */
 .leaflet-container{background:#07090f!important;}
 .leaflet-control-zoom{border:1px solid var(--border2)!important;border-radius:7px!important;overflow:hidden!important;box-shadow:none!important;}
 .leaflet-control-zoom a{background:var(--bg2)!important;color:var(--muted2)!important;border-bottom:1px solid var(--border)!important;width:28px!important;height:28px!important;line-height:28px!important;font-size:16px!important;}
 .leaflet-control-zoom a:hover{background:var(--bg3)!important;color:#fff!important;}
 .leaflet-control-attribution{display:none!important;}
-.detail{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.dp-hdr{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.dp-title{font-size:14px;font-weight:700;}
-.dp-sub{font-size:12px;color:var(--muted2);margin-top:3px;}
-.parts-scroll{flex:1;overflow-y:auto;padding:8px;}
-.part-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
-.part-card:hover{border-color:var(--border2);}
-.part-card.active{border-color:var(--pc);box-shadow:0 0 0 1px color-mix(in srgb,var(--pc) 20%,transparent);}
-.pc-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;user-select:none;}
-.pc-hdr:hover{background:rgba(255,255,255,.02);}
-.pc-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
-.pc-name{font-size:13px;font-weight:700;flex:1;}
-.pc-td{font-size:12px;color:var(--muted2);font-family:var(--mono);}
-.pc-toggle{font-size:10px;color:var(--muted2);margin-left:4px;transition:transform .2s;}
-.pc-body{padding:4px 12px 10px;border-top:1px solid var(--border);}
-.pc-body.collapsed{display:none;}
-.field-row{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);}
-.field-row:last-child{border-bottom:none;}
-.field-top{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.field-lbl{font-size:13px;font-weight:700;color:#fff;opacity:1;flex:1;text-transform:uppercase;letter-spacing:.2px;}
-.field-unit{font-size:12px;color:#fff;font-weight:700;background:var(--bg4);padding:1px 5px;border-radius:3px;}
-.field-nums{display:flex;gap:6px;margin-bottom:4px;}
-.field-num{flex:1;background:var(--bg4);border-radius:5px;padding:9px 7px;text-align:center;}
-.fn-lbl{font-size:10px;color:#d4d0d0;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
-.fn-val{font-family:var(--mono);font-size:14px;font-weight:700;}
-.fn-exec{color:var(--green);}
-.fn-rem{color:var(--orange);}
-.field-bar{height:6px;background:var(--border2);border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.4);}
-.field-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
-.field-pct{font-family:var(--mono);font-size:9px;font-weight:700;text-align:right;margin-top:2px;}
+/* TOOLTIP */
 .tt{position:fixed;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;padding:10px 13px;font-size:11px;pointer-events:none;display:none;z-index:9999;min-width:155px;box-shadow:0 8px 32px rgba(0,0,0,.8);}
 .tt-title{font-weight:700;margin-bottom:6px;font-size:12px;}
 .tt-row{display:flex;justify-content:space-between;gap:12px;margin-top:3px;color:var(--muted2);font-size:10px;}
@@ -128,6 +153,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 </header>
 
 <div class="app">
+  <!-- LEFT: DETAIL -->
   <aside class="detail">
     <div class="dp-hdr">
       <div class="dp-title" id="dp-title">Overall Progress</div>
@@ -136,8 +162,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <div class="parts-scroll" id="parts-detail"></div>
   </aside>
 
+  <!-- CENTER: MAP -->
   <main class="center">
-    <div class="map-wrap">
+    <div class="map-wrap" style="position:relative;">
       <div class="map-panel">
         <div id="leaflet-map"></div>
         <div class="mp-bar">
@@ -149,65 +176,60 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
             <div class="mleg"><div class="mleg-d" style="background:#3a86e8;opacity:.75"></div>Part 3</div>
             <div class="mleg"><div class="mleg-d" style="background:#27c47a;opacity:.75"></div>Part 4</div>
           </div>
-          <button id="toggle-parts-btn" onclick="toggleParts()" 
-  style="padding:3px 9px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:9px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s">
-  Hide Parts
-</button>
+          <button class="hide-parts-btn" id="toggle-parts-btn" onclick="toggleParts()">Hide Parts</button>
           <div class="map-info" id="map-info">Riyadh Overview</div>
         </div>
       </div>
+      <div style="position:absolute;top:10px;right:10px;z-index:1000;display:flex;gap:6px;">
+  <button onclick="setBasemap('dark',this)" 
+    style="padding:4px 10px;border-radius:6px;border:1px solid var(--blue);background:var(--bg2);color:var(--blue);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px;">
+    🔵 DARK
+  </button>
+  <button onclick="setBasemap('satellite',this)"
+    style="padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--muted2);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px;">
+    ✦ SATELLITE
+  </button>
+</div>
     </div>
   </main>
 
+  <!-- RIGHT: NAV -->
   <aside class="nav">
     <div class="zone-wrap">
       <div class="sec-lbl">Zones</div>
       <div class="zone-btns" id="zone-btns"></div>
     </div>
-    <div class="bm-wrap">
-      <div class="sec-lbl">Basemap</div>
-      <div class="bm-btns">
-        <button class="bm-btn on"  onclick="setBasemap('dark',this)">Dark</button>
-        <button class="bm-btn" onclick="setBasemap('satellite',this)">Satellite</button>
-        <button class="bm-btn" onclick="setBasemap('streets',this)">Streets</button>
-        <button class="bm-btn" onclick="setBasemap('topo',this)">Topo</button>
-        <button class="bm-btn" onclick="setBasemap('gray',this)">Gray</button>
-      </div>
-    </div>
     <div class="loc-wrap" id="loc-wrap"></div>
   </aside>
-</div>
 
 <div class="tt" id="tt">
   <div class="tt-title" id="tt-n">—</div>
   <div class="tt-row"><span>Part</span><span class="tt-val" id="tt-layer">—</span></div>
-  <div class="tt-row"><span>Traffic Div.</span><span class="tt-val" id="tt-td">—</span></div>
+  <div class="tt-row"><span>TD</span><span class="tt-val" id="tt-td">—</span></div>
 </div>
 
 <script src="data.js"></script>
 <script>
-const PART_COLORS = {
-  "Part 1":"#e05555","Part 2":"#d4a017",
-  "Part 3":"#3a86e8","Part 4":"#27c47a","Part 5":"#8b5cf6"
-};
-const FIELD_COLORS = {
-  Demolish:     {color:"#e03838",g:["#5a0808","#e03838"]},
-  Subgrade:     {color:"#f08020",g:["#5a2800","#f08020"]},
-  Aggregate_BC: {color:"#d4b010",g:["#483800","#d4b010"]},
-  Asphalt_BC:   {color:"#1ec96e",g:["#003828","#1ec96e"]},
-  Curbstone:    {color:"#10c8d8",g:["#001838","#10c8d8"]},
-  Interlock:    {color:"#2878f0",g:["#001858","#2878f0"]},
-  Milling:      {color:"#7848e8",g:["#200848","#7848e8"]},
-  RC_2:         {color:"#e8a820",g:["#483000","#e8a820"]},
-  Asphalt_WC:   {color:"#27c47a",g:["#003820","#27c47a"]},
+const PART_COLORS={"Part 1":"#e05555","Part 2":"#d4a017","Part 3":"#3a86e8","Part 4":"#27c47a","Part 5":"#8b5cf6"};
+const FIELD_COLORS={
+  Demolish:    {color:"#e03838",g:["#5a0808","#e03838"]},
+  Subgrade:    {color:"#f08020",g:["#5a2800","#f08020"]},
+  Aggregate_BC:{color:"#d4b010",g:["#483800","#d4b010"]},
+  Asphalt_BC:  {color:"#1ec96e",g:["#003828","#1ec96e"]},
+  Curbstone:   {color:"#10c8d8",g:["#001838","#10c8d8"]},
+  Interlock:   {color:"#2878f0",g:["#001858","#2878f0"]},
+  Milling:     {color:"#7848e8",g:["#200848","#7848e8"]},
+  RC_2:        {color:"#e8a820",g:["#483000","#e8a820"]},
+  Asphalt_WC:  {color:"#27c47a",g:["#003820","#27c47a"]},
 };
 
-const BASEMAPS = {
-  dark:      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:20}),
-  satellite: L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
-  streets:   L.tileLayer("https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
-  topo:      L.tileLayer("https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
-  gray:      L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
+// LEAFLET
+const BASEMAPS={
+  dark:     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:20}),
+  satellite:L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
+  streets:  L.tileLayer("https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
+  topo:     L.tileLayer("https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
+  gray:     L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",{maxZoom:20,subdomains:["mt0","mt1","mt2","mt3"]}),
 };
 const RIYADH={center:[24.688,46.722],zoom:11};
 const map=L.map("leaflet-map",{center:RIYADH.center,zoom:RIYADH.zoom,zoomControl:true,scrollWheelZoom:true});
@@ -215,63 +237,51 @@ BASEMAPS.dark.addTo(map);
 let activeTile=BASEMAPS.dark;
 
 function setBasemap(n,btn){
-  document.querySelectorAll(".bm-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
   map.removeLayer(activeTile);activeTile=BASEMAPS[n];activeTile.addTo(map);
 }
 
 const LG={asphalt:L.layerGroup().addTo(map),interlock:L.layerGroup().addTo(map),parts:L.layerGroup()};
 LG.parts.addTo(map);
-let activeZone=null,activeLoc=null,allPartPolys=[];
+let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,allPartPolys=[];
+let partsVisible=true;
 
+// DRAW
 function clearMap(){
   LG.asphalt.clearLayers();LG.interlock.clearLayers();LG.parts.clearLayers();allPartPolys=[];
   map.removeLayer(LG.parts);map.addLayer(LG.parts);
+  if(!partsVisible){map.removeLayer(LG.parts);}
 }
 
-// ── DRAW HELPER ──
-function addRings(featureRings, style, layerGroup, bounds, collect){
-  featureRings.forEach(feat=>{
-    if(!feat||!feat.length)return;
-    // feat[0] هو ring أو array of rings
-    const isMultiRing = Array.isArray(feat[0][0][0]);
-    const ringsArr = isMultiRing ? feat : feat;
+function drawLoc(loc,locName,collectBounds){
+  const bounds=[];
+  // Asphalt
+  loc.asphalt.forEach(feat=>{
+    if(!feat)return;
     feat.forEach(ring=>{
       if(!ring||ring.length<3)return;
-      try{
-        L.polygon(ring,style).addTo(layerGroup);
-        if(collect)bounds.push(...ring);
-      }catch(e){}
+      try{L.polygon(ring,{color:"#252d3a",weight:.6,fillColor:"#181e28",fillOpacity:.92}).addTo(LG.asphalt);if(collectBounds)bounds.push(...ring);}catch(e){}
     });
   });
-}
-
-function drawLoc(loc,zoneName,locName,collectBounds){
-  const bounds=[];
-
-  // Asphalt
-  addRings(loc.asphalt,
-    {color:"#252d3a",weight:.6,fillColor:"#181e28",fillOpacity:.92},
-    LG.asphalt, bounds, collectBounds);
-
   // Interlock
-  addRings(loc.interlock,
-    {color:"#404050",weight:.4,fillColor:"#2a2a3a",fillOpacity:.88},
-    LG.interlock, bounds, collectBounds);
-
+  loc.interlock.forEach(feat=>{
+    if(!feat)return;
+    feat.forEach(ring=>{
+      if(!ring||ring.length<3)return;
+      try{L.polygon(ring,{color:"#404050",weight:.4,fillColor:"#2a2a3a",fillOpacity:.88}).addTo(LG.interlock);if(collectBounds)bounds.push(...ring);}catch(e){}
+    });
+  });
   // Parts
   loc.parts.forEach(part=>{
     const c=PART_COLORS[part.name]||"#aaa";
     if(!part.rings||!part.rings.length)return;
-    // part.rings = [[lat,lng],...] مباشرة
-    const ring = part.rings;
-    if(!Array.isArray(ring[0]))return;
-    const rings = Array.isArray(ring[0][0]) ? ring : [ring];
-    rings.forEach(ring=>{
+    const isDeep=Array.isArray(part.rings[0])&&Array.isArray(part.rings[0][0]);
+    const ringsArr=isDeep?part.rings:[part.rings];
+    ringsArr.forEach(ring=>{
       if(!ring||ring.length<3)return;
       try{
         const poly=L.polygon(ring,{color:c,weight:1.8,fillColor:c,fillOpacity:.32,opacity:.88});
-        poly.on("click",()=>{if(locName)scrollToPartCard(part.name);});
-        poly.on("mouseover",e=>{showTT(e.originalEvent,part.name,part.traffic_diversion);poly.setStyle({weight:2.8});});
+        poly.on("click",()=>scrollToPartCard(part.name));
+        poly.on("mouseover",e=>{showTT(e.originalEvent,part.name,part.td);poly.setStyle({weight:2.8});});
         poly.on("mouseout",()=>{hideTT();poly.setStyle({weight:1.8});});
         poly.addTo(LG.parts);allPartPolys.push({poly,partName:part.name});
         if(collectBounds)bounds.push(...ring);
@@ -284,55 +294,185 @@ function drawLoc(loc,zoneName,locName,collectBounds){
 function drawAllLocs(zoneFilter){
   const zones=zoneFilter?{[zoneFilter]:GDB_DATA.zones[zoneFilter]}:GDB_DATA.zones;
   const bounds=[];
-  Object.entries(zones).forEach(([zn,zd])=>{
+  Object.values(zones).forEach(zd=>{
     Object.entries(zd.locations).forEach(([ln,loc])=>{
-      bounds.push(...drawLoc(loc,zn,ln,true));
+      bounds.push(...drawLoc(loc,ln,true));
     });
   });
   return bounds;
 }
 
-// ── AGGREGATED ──
-function calcTotals(zones){
+// AGGREGATED
+function calcTotals(zones,fieldKey,valueType){
   const totals={};
-  Object.keys(GDB_DATA.field_meta).filter(k=>k!=="Traffic_Diversion").forEach(k=>{totals[k]={executed:0,td:0};});
+  Object.keys(GDB_DATA.fields).forEach(k=>{totals[k]={executed:0,front_work:0};});
   Object.values(zones).forEach(zd=>{
     Object.values(zd.locations).forEach(loc=>{
       loc.parts.forEach(part=>{
-        const td=part.traffic_diversion||0;
         Object.keys(totals).forEach(fk=>{
-          totals[fk].td+=td;
-          totals[fk].executed+=part.data[fk]?.executed||0;
+          const d=part.data[fk];
+          if(d){
+            if(d.executed!=null)totals[fk].executed+=d.executed;
+            if(d.front_work!=null)totals[fk].front_work+=d.front_work;
+          }
         });
       });
     });
   });
   return totals;
 }
+function pctGradient(pct){
+  if(pct==null) return "#333";
+  if(pct>=80) return "linear-gradient(90deg,#003820,#1ec96e)";
+  if(pct>=50) return "linear-gradient(90deg,#483800,#d4b010)";
+  if(pct>=25) return "linear-gradient(90deg,#5a2800,#f08020)";
+  return "linear-gradient(90deg,#5a0808,#e03838)";
+}
 
-function renderAggregated(title,sub,zones){
+function fieldRowHTML(fk,fi,exec,fw,pct,fc,clickable,highlighted){
+  return `<div class="field-row${highlighted?' highlighted':''}">
+    <div class="field-top">
+      <span class="field-lbl">${fi.label}</span>
+      <span class="field-unit">${fi.unit}</span>
+    </div>
+    <div class="field-nums">
+  <div class="field-num" onclick="filterByField('${fk}','executed')" style="cursor:pointer">
+    <div class="fn-lbl">Executed</div>
+    <div class="fn-val fn-exec">${exec!=null?Math.round(exec).toLocaleString():"—"}</div>
+  </div>
+  <div class="field-num" onclick="filterByField('${fk}','front_work')" style="cursor:pointer">
+    <div class="fn-lbl">Front Work</div>
+    <div class="fn-val fn-fw">${fw!=null?Math.round(fw).toLocaleString():"—"}</div>
+  </div>
+</div>
+    <div class="field-bar" style="background:var(--border2);position:relative;">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:${pct||0}%;background:linear-gradient(90deg,#6c3b9e,#3a86e8,#1ec96e,#d4b010,#f08020,#e03838);border-radius:99px;"></div>
+</div>
+<div class="field-pct" style="color:${fc.color}">${pct!=null?pct+"%":"—"}</div>
+  </div>`;
+}
+
+function renderAggregated(title,sub,zones,clickable){
   document.getElementById("dp-title").textContent=title;
   document.getElementById("dp-sub").textContent=sub;
   const totals=calcTotals(zones);
+  let html='';
+  if(activeFilter){
+    const [_fk,_vt] = activeFilter.split('||');
+const _label = GDB_DATA.fields[_fk]?.label || _fk;
+const _type = _vt==='front_work'?'Front Work':'Executed';
+html+=`<div class="filter-badge" onclick="clearFilter()">✕ ${_label} — ${_type} — Click to clear</div>`;
+  }
+  html+=Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
+    const t=totals[fk];
+    const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
+    const total=t.executed+(t.front_work||0);
+    const pct=total>0?Math.round((t.executed/total)*100):null;
+    return fieldRowHTML(fk,fi,t.executed,t.front_work,pct,fc,clickable,activeFilter===fk);
+  }).join("");
+  document.getElementById("parts-detail").innerHTML=html;
+// استرجع الـ active state بعد render
+if(activeFilter){
+  const [field,vtype]=activeFilter.split('||');
+  document.querySelectorAll(`[onclick="filterByField('${field}','${vtype}')"]`).forEach(e=>e.classList.add("active"));
+}
+}
+
+function renderLocOverall(loc,locName){
+  document.getElementById("dp-title").textContent=locName;
+  document.getElementById("dp-sub").textContent=`${loc.parts.length} Parts — Overall`;
+  const totals={};
+  Object.keys(GDB_DATA.fields).forEach(k=>{totals[k]={executed:0,front_work:0};});
+  loc.parts.forEach(part=>{
+    Object.keys(totals).forEach(fk=>{
+      const d=part.data[fk];
+      if(d){
+        if(d.executed!=null)totals[fk].executed+=d.executed;
+        if(d.front_work!=null)totals[fk].front_work+=d.front_work;
+      }
+    });
+  });
   document.getElementById("parts-detail").innerHTML=
-    Object.entries(GDB_DATA.field_meta).filter(([k])=>k!=="Traffic_Diversion").map(([fk,fi])=>{
-      const t=totals[fk]||{executed:0,td:0};
-      const rem=Math.max(0,t.td-t.executed);
-      const pct=t.td>0?Math.round((t.executed/t.td)*100):0;
+    Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
+      const t=totals[fk];
       const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
-      return `<div class="field-row" style="padding:8px 0">
-        <div class="field-top"><span class="field-lbl">${fi.label}</span><span class="field-unit">${fi.unit}</span></div>
-        <div class="field-nums">
-          <div class="field-num"><div class="fn-lbl">Executed</div><div class="fn-val fn-exec">${t.executed.toLocaleString()}</div></div>
-          <div class="field-num"><div class="fn-lbl">Remaining</div><div class="fn-val fn-rem">${rem.toLocaleString()}</div></div>
-        </div>
-        <div class="field-bar"><div class="field-fill" style="width:${pct}%;background:linear-gradient(90deg,${fc.g[0]},${fc.g[1]})"></div></div>
-        <div class="field-pct" style="color:${fc.color}">${pct}%</div>
-      </div>`;
+      const total=t.executed+(t.front_work||0);
+      const pct=total>0?Math.round((t.executed/total)*100):null;
+      return fieldRowHTML(fk,fi,t.executed,t.front_work,pct,fc,false,false);
     }).join("");
 }
 
-// ── ZONES ──
+function renderPartDetail(part){
+  document.getElementById("dp-title").textContent=part.name;
+  document.getElementById("dp-sub").textContent=`TD: ${part.td!=null?part.td.toLocaleString()+" m²":"—"}`;
+  document.getElementById("parts-detail").innerHTML=
+    Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
+      const d=part.data[fk]; if(!d)return"";
+      const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
+      return fieldRowHTML(fk,fi,d.executed,d.front_work,d.pct,fc,false,false);
+    }).join("");
+}
+
+// FILTER
+function filterByField(fk, valueType){
+  const key = fk+'||'+valueType;
+  activeFilter = (activeFilter===key) ? null : key;
+  document.querySelectorAll(".field-num").forEach(e=>e.classList.remove("active"));
+if(activeFilter){
+  const [field,vtype]=activeFilter.split('||');
+  document.querySelectorAll(`[onclick="filterByField('${field}','${vtype}')"]`).forEach(e=>e.classList.add("active"));
+}
+  const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+  clearMap();
+  if(activeFilter){
+    const parts = activeFilter.split('||');
+    const field = parts[0];
+    const vtype = parts[1];
+    const bounds=[];
+    Object.entries(zones).forEach(([zn,zd])=>{
+      Object.entries(zd.locations).forEach(([ln,loc])=>{
+        const hasVal=loc.parts.some(p=>{
+          const val=p.data[field]?.[vtype];
+          return val!=null && val>0;
+        });
+        if(hasVal) bounds.push(...drawLoc(loc,ln,true));
+      });
+    });
+    if(bounds.length>0){try{map.flyToBounds(L.latLngBounds(bounds),{padding:[40,40],maxZoom:15,duration:.8});}catch(e){}}
+    // فلتر القائمة
+    document.querySelectorAll(".loc-item").forEach(item=>{
+      const locName=item.id.replace("loc-item-","");
+      const zone=item.querySelector(".loc-btn")?.getAttribute("data-zone");
+      if(!zone||!GDB_DATA.zones[zone]?.locations[locName])return;
+      const loc=GDB_DATA.zones[zone].locations[locName];
+      const hasVal=loc.parts.some(p=>{
+        const val=p.data[field]?.[vtype];
+        return val!=null && val>0;
+      });
+      item.style.display=hasVal?"":"none";
+    });
+  } else {
+    drawAllLocs(activeZone);
+    document.querySelectorAll(".loc-item").forEach(i=>i.style.display="");
+  }
+  renderAggregated(
+    activeZone||"Overall Progress",
+    activeZone?`${Object.keys(GDB_DATA.zones[activeZone]?.locations||{}).length} Locations`:"All Zones",
+    zones, true
+  );
+}
+
+function clearFilter(){
+  activeFilter=null;
+  clearMap();
+  drawAllLocs(activeZone);
+  document.querySelectorAll(".loc-item").forEach(i=>i.style.display="");
+  const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+  renderAggregated(activeZone||"Overall Progress",activeZone?"Locations":"All Zones",zones,true);
+  document.querySelectorAll(".field-num").forEach(e=>e.classList.remove("active"));
+}
+
+// ZONES
 function buildZones(){
   const el=document.getElementById("zone-btns");el.innerHTML="";
   const allBtn=document.createElement("button");
@@ -351,154 +491,121 @@ function buildZones(){
 }
 
 function selectZone(zoneName,btn){
-  activeZone=zoneName;activeLoc=null;
+  activeZone=zoneName;activeLoc=null;activePart=null;activeFilter=null;
   document.querySelectorAll(".zone-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
-  document.querySelectorAll(".loc-btn").forEach(b=>b.classList.remove("active"));
   buildLocList();clearMap();
   if(!zoneName){
-    resetView();
-    drawAllLocs(null);
-    renderAggregated("Overall Progress","All Zones",GDB_DATA.zones);
+    resetView();drawAllLocs(null);
+    renderAggregated("Overall Progress","All Zones",GDB_DATA.zones,true);
     document.getElementById("map-info").textContent="Riyadh Overview";
   } else {
     const bounds=drawAllLocs(zoneName);
     if(bounds.length>0){try{map.flyToBounds(L.latLngBounds(bounds),{padding:[40,40],maxZoom:15,duration:.8});}catch(e){}}
-    renderAggregated(zoneName,`${Object.keys(GDB_DATA.zones[zoneName].locations).length} Locations`,{[zoneName]:GDB_DATA.zones[zoneName]});
+    renderAggregated(zoneName,`${Object.keys(GDB_DATA.zones[zoneName].locations).length} Locations`,{[zoneName]:GDB_DATA.zones[zoneName]},true);
     document.getElementById("map-info").textContent=zoneName;
   }
 }
 
-// ── LOCATIONS ──
+// LOCATIONS
 function buildLocList(){
   const el=document.getElementById("loc-wrap");el.innerHTML="";
   const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
   Object.entries(zones).forEach(([zn,zd])=>{
-    if(!activeZone){const sec=document.createElement("div");sec.className="loc-sec";sec.textContent=zn;el.appendChild(sec);}
-    Object.keys(zd.locations).forEach(ln=>{
-      const loc=zd.locations[ln];
+    Object.entries(zd.locations).forEach(([ln,loc])=>{
+      const item=document.createElement("div");item.className="loc-item";item.id="loc-item-"+ln;
+      // Location button
       const btn=document.createElement("div");
       btn.className="loc-btn";btn.id="loc-btn-"+ln;
       btn.setAttribute("data-zone",zn);
       btn.innerHTML=`<div class="loc-ico">📍</div>
-        <div class="loc-info"><div class="loc-name">${ln}</div><div class="loc-meta">${loc.parts.length} Parts</div></div>`;
+        <div class="loc-info"><div class="loc-name-txt">${ln}</div><div class="loc-meta">${loc.parts.length} Parts</div></div>`;
       btn.onclick=()=>selectLoc(zn,ln,btn);
-      el.appendChild(btn);
+      // Parts pills under location
+      const partsDiv=document.createElement("div");
+      partsDiv.className="loc-parts";partsDiv.id="loc-parts-"+ln;
+      loc.parts.forEach(part=>{
+        const c=PART_COLORS[part.name]||"#aaa";
+        const pill=document.createElement("button");
+        pill.className="part-pill";pill.id="pill-"+ln+"-"+part.name.replace(" ","-");
+        pill.textContent=part.name;
+        pill.style.cssText=`background:${c}22;color:${c};border-color:${c}44;`;
+        pill.onclick=(e)=>{e.stopPropagation();selectPart(zn,ln,part.name,pill);};
+        partsDiv.appendChild(pill);
+      });
+      item.appendChild(btn);
+      item.appendChild(partsDiv);
+      el.appendChild(item);
     });
   });
 }
 
 function selectLoc(zoneName,locName,btn){
-  if(activeLoc===locName){
+  // toggle
+  if(activeLoc===locName&&activePart===null){
     activeLoc=null;
     document.querySelectorAll(".loc-btn").forEach(e=>e.classList.remove("active"));
-    clearMap();
-    const bnds=drawAllLocs(activeZone);
-    if(!activeZone){resetView();}
-    else if(bnds.length>0){try{map.flyToBounds(L.latLngBounds(bnds),{padding:[40,40],maxZoom:15,duration:.8});}catch(e){}}
-    if(activeZone){renderAggregated(activeZone,`${Object.keys(GDB_DATA.zones[activeZone].locations).length} Locations`,{[activeZone]:GDB_DATA.zones[activeZone]});}
-    else{renderAggregated("Overall Progress","All Zones",GDB_DATA.zones);}
-    document.getElementById("map-info").textContent=activeZone||"Riyadh Overview";
+    document.querySelectorAll(".loc-parts").forEach(e=>e.classList.remove("open"));
+    const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+    renderAggregated(activeZone||"Overall Progress",activeZone?`${Object.keys(zones[activeZone]?.locations||{}).length} Locations`:"All Zones",zones,true);
     return;
   }
-  activeLoc=locName;
+  activeLoc=locName;activePart=null;
   document.querySelectorAll(".loc-btn").forEach(e=>e.classList.remove("active"));
-  if(btn){btn.classList.add("active");btn.scrollIntoView({block:"nearest",behavior:"smooth"});}
+  document.querySelectorAll(".loc-parts").forEach(e=>e.classList.remove("open"));
+  document.querySelectorAll(".part-pill").forEach(e=>e.classList.remove("active-part"));
+  btn.classList.add("active");
+  btn.scrollIntoView({block:"nearest",behavior:"smooth"});
+  document.getElementById("loc-parts-"+locName)?.classList.add("open");
   const loc=GDB_DATA.zones[zoneName].locations[locName];
-  clearMap();
-  const bounds=drawLoc(loc,zoneName,locName,true);
-  if(bounds.length>0){try{map.flyToBounds(L.latLngBounds(bounds),{padding:[28,28],maxZoom:17,duration:.8});}catch(e){}}
-  renderDetail(loc,locName);
+  renderLocOverall(loc,locName);
   document.getElementById("map-info").textContent=locName;
 }
 
-// ── DETAIL ──
-function renderDetail(loc,locName){
-  document.getElementById("dp-title").textContent=locName;
-  document.getElementById("dp-sub").textContent=`${loc.parts.length} Parts`;
-  // Part nav buttons
-  const navBtns=loc.parts.map(part=>{
-    const c=PART_COLORS[part.name]||"#aaa";
-    return `<button onclick="scrollToPartCard('${part.name}')" 
-      style="padding:4px 12px;border-radius:6px;border:1px solid ${c}55;background:${c}18;color:${c};font-size:11px;font-weight:700;cursor:pointer;font-family:var(--mono);transition:all .15s"
-      onmouseover="this.style.background='${c}33'" onmouseout="this.style.background='${c}18'">
-      ${part.name}
-    </button>`;
-  }).join("");
-
-  document.getElementById("parts-detail").innerHTML=
-    `<div style="display:flex;gap:6px;flex-wrap:wrap;padding:4px 2px 10px;border-bottom:1px solid var(--border);margin-bottom:8px">${navBtns}</div>`+
-    loc.parts.map((part,pi)=>{
-      const c=PART_COLORS[part.name]||"#aaa";
-      const td=part.traffic_diversion;
-      const fieldRows=Object.entries(GDB_DATA.field_meta).filter(([k])=>k!=="Traffic_Diversion").map(([fk,fi])=>{
-        const fd=part.data[fk];if(!fd)return"";
-        const exec=fd.executed,rem=fd.remaining,pct=fd.pct;
-        const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
-        return `<div class="field-row">
-          <div class="field-top"><span class="field-lbl">${fi.label}</span><span class="field-unit">${fi.unit}</span></div>
-          <div class="field-nums">
-            <div class="field-num"><div class="fn-lbl">Executed</div><div class="fn-val fn-exec">${exec!=null?exec.toLocaleString():"—"}</div></div>
-            <div class="field-num"><div class="fn-lbl">Remaining</div><div class="fn-val fn-rem">${rem!=null?rem.toLocaleString():"—"}</div></div>
-          </div>
-          <div class="field-bar"><div class="field-fill" style="width:${pct||0}%;background:linear-gradient(90deg,${fc.g[0]},${fc.g[1]})"></div></div>
-          <div class="field-pct" style="color:${fc.color}">${pct!=null?pct+"%":"—"}</div>
-        </div>`;
-      }).join("");
-      return `<div class="part-card" id="pc-${part.name.replace(" ","-")}" style="--pc:${c};animation-delay:${pi*.06}s">
-        <div class="pc-hdr" onclick="toggleCard('${part.name.replace(" ","-")}')">
-          <div class="pc-dot" style="background:${c}"></div>
-          <div class="pc-name">${part.name}</div>
-          <div class="pc-td">TD: ${td!=null?td.toLocaleString()+" m²":"—"}</div>
-          <span class="pc-toggle" id="toggle-${part.name.replace(" ","-")}">▼</span>
-        </div>
-        <div class="pc-body collapsed" id="body-${part.name.replace(" ","-")}">
-          ${fieldRows||'<div style="padding:8px;color:var(--muted2);font-size:11px">No data</div>'}
-        </div>
-      </div>`;
-    }).join("");
-}
-
-function toggleCard(id){
-  const body=document.getElementById("body-"+id);
-  const arrow=document.getElementById("toggle-"+id);
-  if(body){
-    const isOpen=!body.classList.contains("collapsed");
-    body.classList.toggle("collapsed");
-    if(arrow)arrow.textContent=isOpen?"▼":"▲";
+function selectPart(zoneName,locName,partName,pill){
+  const loc=GDB_DATA.zones[zoneName].locations[locName];
+  const part=loc.parts.find(p=>p.name===partName);
+  if(!part)return;
+  // toggle
+  if(activePart===partName&&activeLoc===locName){
+    activePart=null;
+    document.querySelectorAll(".part-pill").forEach(e=>e.classList.remove("active-part"));
+    renderLocOverall(loc,locName);
+    return;
   }
+  activePart=partName;
+  document.querySelectorAll(".part-pill").forEach(e=>e.classList.remove("active-part"));
+  pill.classList.add("active-part");
+  renderPartDetail(part);
 }
 
+// PART CARD SCROLL (from map click)
 function scrollToPartCard(pn){
-  const id=pn.replace(" ","-");
-  const card=document.getElementById("pc-"+id);
-  const body=document.getElementById("body-"+id);
-  const arrow=document.getElementById("toggle-"+id);
-  if(card){
-    // افتح الـ card لو مقفولة
-    if(body&&body.classList.contains("collapsed")){
-      body.classList.remove("collapsed");
-      if(arrow)arrow.textContent="▲";
-    }
-    card.scrollIntoView({block:"nearest",behavior:"smooth"});
-    card.classList.add("active");
-    setTimeout(()=>card.classList.remove("active"),1500);
+  // If a location is selected, show part detail
+  if(activeLoc){
+    const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+    Object.entries(zones).forEach(([zn,zd])=>{
+      if(zd.locations[activeLoc]){
+        const part=zd.locations[activeLoc].parts.find(p=>p.name===pn);
+        if(part){
+          const pill=document.getElementById("pill-"+activeLoc+"-"+pn.replace(" ","-"));
+          selectPart(zn,activeLoc,pn,pill||{classList:{add:()=>{},remove:()=>{}}});
+        }
+      }
+    });
   }
 }
-let partsVisible = true;
+
+// HIDE/SHOW PARTS
 function toggleParts(){
-  const btn = document.getElementById("toggle-parts-btn");
+  const btn=document.getElementById("toggle-parts-btn");
   if(partsVisible){
-    map.removeLayer(LG.parts);
-    btn.textContent = "Show Parts";
-    btn.style.color = "var(--green)";
-    btn.style.borderColor = "var(--green)";
+    map.removeLayer(LG.parts);btn.textContent="Show Parts";
+    btn.style.color="var(--green)";btn.style.borderColor="var(--green)";
   } else {
-    map.addLayer(LG.parts);
-    btn.textContent = "Hide Parts";
-    btn.style.color = "var(--muted2)";
-    btn.style.borderColor = "var(--border2)";
+    map.addLayer(LG.parts);btn.textContent="Hide Parts";
+    btn.style.color="";btn.style.borderColor="";
   }
-  partsVisible = !partsVisible;
+  partsVisible=!partsVisible;
 }
 
 function resetView(){
@@ -519,8 +626,7 @@ map.on("mousemove",e=>{if(tt.style.display==="block"){tt.style.left=(e.originalE
 function tick(){document.getElementById("hdr-date").textContent=new Date().toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});}
 tick();setInterval(tick,60000);
 
-buildZones();
-buildLocList();
+buildZones();buildLocList();
 document.getElementById("zone-btn-ALL").click();
 </script>
 </body>
