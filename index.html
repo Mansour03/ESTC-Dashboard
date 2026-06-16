@@ -36,13 +36,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .app{display:grid;grid-template-columns:400px 1fr 380px;height:calc(100vh - 52px);}
 /* DETAIL (LEFT) */
 .detail{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.dp-hdr{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;height:58px;}
-.dp-title{font-size:14px;font-weight:700;display:flex; justify-content:space-between; align-items:center;}
-.dp-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+.dp-hdr{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dp-box{background:#000208;border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-top:0px;width:100%;height:60px;}
+.dp-title{font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;margin-top:0px;margin-left:1px;margin-right:4px;}
+.dp-sub{font-size:13px;color:var(--muted2);margin-top:3px;}
 .parts-scroll{flex:1;overflow-y:auto;padding:8px;}
 /* FIELD ROWS */
 .field-row{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .15s;border-radius:4px;}
-.field-row.highlighted{background:rgba(40,120,240,.08);border-color:rgba(40,120,240,.2);}
+.field-row.highlighted{background:rgb(15, 21, 31);border-color:rgba(40,120,240,.2);}
 .field-row:last-child{border-bottom:none;}
 .field-top{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:0 4px;}
 .field-lbl{font-size:13px;font-weight:700;color:#fff;flex:1;text-transform:uppercase;letter-spacing:.2px;}
@@ -156,9 +157,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   <!-- LEFT: DETAIL -->
   <aside class="detail">
     <div class="dp-hdr">
-      <div class="dp-title" id="dp-title">Overall Progress</div>
-      <div class="dp-sub" id="dp-sub">All Zones</div>
-    </div>
+  <div class="dp-box">
+    <div class="dp-title" id="dp-title">Overall Progress</div>
+    <div class="dp-sub" id="dp-sub">All Zones</div>
+  </div>
+</div>
     <div class="parts-scroll" id="parts-detail"></div>
   </aside>
 
@@ -358,7 +361,10 @@ function fieldRowHTML(fk,fi,exec,fw,pct,fc,clickable,highlighted){
 
 function renderAggregated(title,sub,zones,clickable){
   document.getElementById("dp-title").textContent=title;
+  document.getElementById("dp-title").style.marginTop="0px";
+  document.getElementById("dp-title").style.marginLeft="0px";
   document.getElementById("dp-sub").textContent=sub;
+  document.getElementById("dp-sub").style.marginLeft="1px";
   const totals=calcTotals(zones);
   let html='';
   
@@ -380,6 +386,7 @@ function renderAggregated(title,sub,zones,clickable){
 }
 function renderLocOverall(loc,locName){
   document.getElementById("dp-title").textContent=locName;
+document.getElementById("dp-title").style.marginTop="0px";
   document.getElementById("dp-sub").textContent=`${loc.parts.length} Parts — Overall`;
   const totals={};
   Object.keys(GDB_DATA.fields).forEach(k=>{totals[k]={executed:0,front_work:0};});
@@ -403,8 +410,9 @@ function renderLocOverall(loc,locName){
 }
 
 function renderPartDetail(part){
-  document.getElementById("dp-title").innerHTML=`<span>${part.name}</span><span style="font-size:11px;font-weight:400;color:var(--muted2);margin-left:auto;font-family:var(--mono)">${part.td!=null?'TD: '+part.td.toLocaleString()+' m²':''}</span>`;
-  document.getElementById("dp-sub").textContent=``;
+document.getElementById("dp-title").innerHTML=`<span style="color:${PART_COLORS[part.name]||'#fff'};font-weight:700;font-size:18px">${part.name}</span><span style="font-size:11px;font-weight:400;color:var(--muted2);margin-left:auto;font-family:var(--mono)">${part.td!=null?'TD: '+part.td.toLocaleString()+' m²':''}</span>`;
+document.getElementById("dp-title").style.marginTop="6px";
+document.getElementById("dp-sub").textContent="";
   document.getElementById("parts-detail").innerHTML=
     Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
       const d=part.data[fk]; if(!d)return"";
