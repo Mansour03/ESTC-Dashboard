@@ -509,6 +509,10 @@ function buildZones(){
 }
 
 function selectZone(zoneName,btn){
+  if(activeZone===zoneName && zoneName!==null){
+    document.getElementById("zone-btn-ALL").click();
+    return;
+  }
   activeZone=zoneName;activeLoc=null;activePart=null;activeFilter=null;
   document.querySelectorAll(".zone-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
   buildLocList();clearMap();
