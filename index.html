@@ -205,10 +205,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   </aside>
 
 <div class="tt" id="tt">
-  <div class="tt-loc" id="tt-loc" style="font-size:10px;color:var(--muted2);margin-bottom:2px;"></div>
+  <div class="tt-loc" id="tt-loc" style="font-size:12px;color:#ffffff;margin-bottom:2px;font-weight: bold;"></div>
   <div class="tt-title" id="tt-n">—</div>
-  <div class="tt-row"><span>Part</span><span class="tt-val" id="tt-layer">—</span></div>
-  <div class="tt-row"><span>TD</span><span class="tt-val" id="tt-td">—</span></div>
+  <div class="tt-row"><span style="font-size:12px;color:#fff;font-weight: bold;">TD</span><span class="tt-val" id="tt-td" style="font-size:12px;color:#fff;">—</span></div>
 </div>
 
 <script src="data.js"></script>
@@ -786,8 +785,9 @@ function resetView() {
 const tt=document.getElementById("tt");
 function showTT(e,name,td,locName){
   document.getElementById("tt-loc").textContent=locName||"";
-  document.getElementById("tt-n").textContent=name;
-  document.getElementById("tt-layer").textContent=name;
+  const ttN=document.getElementById("tt-n");
+  ttN.textContent=name;
+  ttN.style.color=PART_COLORS[name]||"#fff";
   document.getElementById("tt-td").textContent=td!=null?td.toLocaleString()+" m²":"—";
   tt.style.display="block";tt.style.left=(e.clientX+14)+"px";tt.style.top=(e.clientY-10)+"px";
 }
