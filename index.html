@@ -111,7 +111,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .bm-btn:hover,.bm-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
 /* CENTER */
 .center{display:flex;flex-direction:column;overflow:hidden;}
-.chart-wrap{flex-shrink:0;height:280px;padding:8px 10px 0;display:flex;flex-direction:column;}
+.chart-wrap{flex-shrink:0;height:300px;padding:8px 10px 0;display:flex;flex-direction:column;}
 .chart-bc{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted2);margin-bottom:4px;flex-shrink:0;}
 .chart-bc span{cursor:pointer;transition:color .15s;}
 .chart-bc span:hover{color:var(--blue);}
@@ -318,8 +318,8 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
         }
       }},
       scales:{
-        y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:9}},grid:{color:"#151e2e"}},
-        x:{ticks:{color:"#8aa0c0",font:{size:9}},grid:{display:false}}
+        y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:10}},grid:{color:"#151e2e"}},
+        x:{ticks:{color:"#ffffff",font:{size:11,weight:800,family:"'Inter',sans-serif"}},grid:{display:false}}
       },
       onClick:(evt,elems)=>{
         if(elems.length>0 && onClickFn) onClickFn(elems[0].index);
