@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root{
   --bg:#07090f;--bg2:#0c1018;--bg3:#101520;--bg4:#141c28;
@@ -110,6 +111,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .bm-btn:hover,.bm-btn.on{background:var(--blue);color:#fff;border-color:var(--blue);}
 /* CENTER */
 .center{display:flex;flex-direction:column;overflow:hidden;}
+.chart-wrap{flex-shrink:0;height:280px;padding:8px 10px 0;display:flex;flex-direction:column;}
+.chart-bc{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted2);margin-bottom:4px;flex-shrink:0;}
+.chart-bc span{cursor:pointer;transition:color .15s;}
+.chart-bc span:hover{color:var(--blue);}
+.chart-bc span.bc-current{color:#fff;font-weight:700;cursor:default;}
+.chart-bc span.bc-current:hover{color:#fff;}
+.chart-bc .bc-sep{color:var(--muted);cursor:default;}
+.chart-canvas-wrap{flex:1;min-height:0;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;}
 .map-wrap{flex:1;padding:8px 10px 10px;min-height:0;}
 .map-panel{height:100%;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:flex;flex-direction:column;}
 #leaflet-map{flex:1;min-height:0;}
@@ -193,6 +202,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   </button>
 </div>
     </div>
+    <div class="chart-wrap" id="chart-wrap">
+      <div class="chart-bc" id="chart-bc"></div>
+      <div class="chart-canvas-wrap">
+        <canvas id="main-chart"></canvas>
+      </div>
+    </div>
   </main>
 
   <!-- RIGHT: NAV -->
@@ -245,6 +260,149 @@ function setBasemap(n,btn){
 const LG={asphalt:L.layerGroup().addTo(map),interlock:L.layerGroup().addTo(map),parts:L.layerGroup()};
 LG.parts.addTo(map);
 let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,allPartPolys=[];
+let mainChart=null;
+
+function getZonePct(zoneData){
+  const t=calcTotals({"_":zoneData});
+  let sumExec=0,sumTotal=0;
+  Object.values(t).forEach(v=>{sumExec+=v.executed||0;sumTotal+=v.total||0;});
+  return sumTotal>0?Math.min(Math.round((sumExec/sumTotal)*100),100):0;
+}
+function getLocPct(loc){
+  let sumExec=0,sumTotal=0;
+  loc.parts.forEach(part=>{
+    Object.values(part.data).forEach(d=>{
+      sumExec+=d.executed||0;sumTotal+=d.total||0;
+    });
+  });
+  return sumTotal>0?Math.min(Math.round((sumExec/sumTotal)*100),100):0;
+}
+function getPartPct(part){
+  let sumExec=0,sumTotal=0;
+  Object.values(part.data).forEach(d=>{
+    sumExec+=d.executed||0;sumTotal+=d.total||0;
+  });
+  return sumTotal>0?Math.min(Math.round((sumExec/sumTotal)*100),100):0;
+}
+function getFieldPct(d){
+  return (d.total>0 && d.executed!=null)?Math.min(Math.round((d.executed/d.total)*100),100):0;
+}
+function wrapLabel(text){
+  const words=text.split(" ");
+  if(words.length<=1) return [text];
+  const mid=Math.ceil(words.length/2);
+  const line1=words.slice(0,mid).join(" ");
+  const line2=words.slice(mid).join(" ");
+  return [line1,line2];
+}
+
+function barColor(pct){
+  if(pct>=80) return "#1ec96e";
+  if(pct>=50) return "#d4b010";
+  if(pct>=25) return "#f08020";
+  return "#e03838";
+}
+
+function renderChart(labels,values,colors,onClickFn,fullLabels){
+  const ctx=document.getElementById("main-chart").getContext("2d");
+  if(mainChart) mainChart.destroy();
+  mainChart=new Chart(ctx,{
+    type:"bar",
+    data:{labels:labels,datasets:[{data:values,backgroundColor:colors,borderRadius:4,maxBarThickness:46}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{
+        callbacks:{
+          title:c=>fullLabels?fullLabels[c[0].dataIndex]:c[0].label,
+          label:c=>c.parsed.y+"%"
+        }
+      }},
+      scales:{
+        y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:9}},grid:{color:"#151e2e"}},
+        x:{ticks:{color:"#8aa0c0",font:{size:9}},grid:{display:false}}
+      },
+      onClick:(evt,elems)=>{
+        if(elems.length>0 && onClickFn) onClickFn(elems[0].index);
+      }
+    }
+  });
+}
+
+function renderBreadcrumb(items){
+  const el=document.getElementById("chart-bc");
+  el.innerHTML=items.map((it,i)=>{
+    const sep=i<items.length-1?`<span class="bc-sep">›</span>`:"";
+    const isLast=i===items.length-1;
+    return `<span class="${isLast?'bc-current':''}" ${isLast?'':`onclick="${it.action}"`}>${it.label}</span>${sep}`;
+  }).join("");
+}
+
+function showZonesChart(){
+  const zoneNames=Object.keys(GDB_DATA.zones);
+  const values=zoneNames.map(zn=>getZonePct(GDB_DATA.zones[zn]));
+  const colors=values.map(barColor);
+  renderChart(zoneNames,values,colors,(idx)=>{
+    const zn=zoneNames[idx];
+    const btn=document.getElementById("zone-btn-"+zn);
+    if(btn) selectZone(zn,btn);
+  },zoneNames);
+  renderBreadcrumb([{label:"All Zones",action:""}]);
+}
+
+function showLocationsChart(zoneName){
+  const zd=GDB_DATA.zones[zoneName];
+  const locNames=Object.keys(zd.locations||{});
+  if(locNames.length===0){
+    if(mainChart){mainChart.destroy();mainChart=null;}
+    renderBreadcrumb([{label:"All Zones",action:"resetView()"},{label:zoneName,action:""}]);
+    return;
+  }
+  const values=locNames.map(ln=>getLocPct(zd.locations[ln]));
+  const colors=values.map(barColor);
+  renderChart(locNames.map(l=>wrapLabel(l)),values,colors,(idx)=>{
+    const ln=locNames[idx];
+    const btn=document.getElementById("loc-btn-"+ln);
+    if(btn) selectLoc(zoneName,ln,btn);
+  },locNames);
+  renderBreadcrumb([
+    {label:"All Zones",action:"resetView()"},
+    {label:zoneName,action:`document.getElementById('zone-btn-${zoneName}').click()`}
+  ]);
+}
+
+function showPartsChart(zoneName,locName){
+  const loc=GDB_DATA.zones[zoneName].locations[locName];
+  const partNames=loc.parts.map(p=>p.name);
+  const values=loc.parts.map(p=>getPartPct(p));
+  const colors=values.map((v,i)=>PART_COLORS[partNames[i]]||barColor(v));
+  renderChart(partNames.map(p=>wrapLabel(p)),values,colors,(idx)=>{
+    const pn=partNames[idx];
+    const pill=document.getElementById("pill-"+locName+"-"+pn.replace(" ","-"));
+    if(pill) selectPart(zoneName,locName,pn,pill);
+  },partNames);
+  renderBreadcrumb([
+    {label:"All Zones",action:"resetView()"},
+    {label:zoneName,action:`document.getElementById('zone-btn-${zoneName}').click()`},
+    {label:locName,action:`document.getElementById('loc-btn-${locName}').click()`}
+  ]);
+}
+
+function showFieldsChart(zoneName,locName,part){
+  const fieldKeys=Object.keys(GDB_DATA.fields);
+  const labels=fieldKeys.map(fk=>GDB_DATA.fields[fk].label);
+  const values=fieldKeys.map(fk=>{
+    const d=part.data[fk];
+    return d?getFieldPct(d):0;
+  });
+  const colors=fieldKeys.map(fk=>(FIELD_COLORS[fk]||{color:"#aaa"}).color);
+  renderChart(labels,values,colors,null);
+  renderBreadcrumb([
+    {label:"All Zones",action:"resetView()"},
+    {label:zoneName,action:`document.getElementById('zone-btn-${zoneName}').click()`},
+    {label:locName,action:`document.getElementById('loc-btn-${locName}').click()`},
+    {label:part.name,action:`document.getElementById('pill-${locName}-${part.name.replace(" ","-")}').click()`}
+  ]);
+}
 let partsVisible=true;
 
 // DRAW
@@ -541,6 +699,7 @@ function selectZone(zoneName,btn){
   </div>
 `;
 document.getElementById("map-info").textContent = zoneName;
+showLocationsChart(zoneName);
 return;
 }
 if(!zoneName){
@@ -552,6 +711,7 @@ if(!zoneName){
     if(bounds.length>0){try{map.flyToBounds(L.latLngBounds(bounds),{padding:[40,40],maxZoom:15,duration:.8});}catch(e){}}
     renderAggregated(zoneName,`${Object.keys(GDB_DATA.zones[zoneName].locations).length} Locations`,{[zoneName]:GDB_DATA.zones[zoneName]},true);
     document.getElementById("map-info").textContent=zoneName;
+    showLocationsChart(zoneName);
   }
 }
 
@@ -604,7 +764,14 @@ function selectLoc(zoneName,locName,btn){
     });
     
     renderAggregated(activeZone||"Overall Progress",activeZone?`${Object.keys(zones[activeZone]?.locations||{}).length} Locations`:"All Zones",zones,true);
-    resetView();
+    if(activeZone){
+      const b=drawAllLocs(activeZone);
+      if(b.length>0){try{map.flyToBounds(L.latLngBounds(b),{padding:[40,40],maxZoom:15,duration:.8});}catch(e){}}
+      document.getElementById("map-info").textContent=activeZone;
+      showLocationsChart(activeZone);
+    } else {
+      resetView();
+    }
     return;
   }
 
@@ -629,11 +796,10 @@ function selectLoc(zoneName,locName,btn){
   // بنلف نرسم "كل اللوكيشنات" المتاحة في الزون الحالي أو المشروع كله عشان ميتخفوش
   Object.entries(zones).forEach(([zName, zData]) => {
     Object.entries(zData.locations || {}).forEach(([lName, lData]) => {
-      // بنرسم اللوكيشن الحالي
-      const b = drawLoc(lData, zName, lName, false);
+      const isTarget = (lName === locName);
+      const b = drawLoc(lData, zName, lName, isTarget);
       
-      // لو هو ده اللوكيشن اللي المستخدم ضغط عليه، بنحتفظ بحدوده للزووم
-      if (lName === locName) {
+      if (isTarget) {
         targetBounds = b;
       }
     });
@@ -648,6 +814,7 @@ function selectLoc(zoneName,locName,btn){
   
   renderLocOverall(loc,locName);
   document.getElementById("map-info").textContent=locName;
+  showPartsChart(zoneName,locName);
 }
 
 function selectPart(zoneName, locName, partName, pill) {
@@ -669,6 +836,7 @@ Object.entries(zones).forEach(([zn, zd]) => {
   });
 });
     renderLocOverall(loc, locName);
+    showPartsChart(zoneName, locName);
     return;
 
     // 2. التحقق: هل المستخدم أصلاً واقف جوه لوكيشن محدد؟
@@ -720,7 +888,10 @@ Object.entries(zones).forEach(([zn, zd]) => {
   
   if (loc) {
     const part = loc.parts.find(p => p.name === partName);
-    if (part) renderPartDetail(part);
+    if (part){
+      renderPartDetail(part);
+      showFieldsChart(zoneName,locName,part);
+    }
   }
 }
 
@@ -780,6 +951,7 @@ function resetView() {
   // 5. عمل زووم راجع وسلس لسكيل مدينة الرياض بالكامل
   map.flyTo(RIYADH.center, RIYADH.zoom, { duration: .8 });
   document.getElementById("map-info").textContent = "Riyadh Overview";
+  showZonesChart();
 }
 
 const tt=document.getElementById("tt");
