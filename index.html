@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{
   --bg:#07090f;--bg2:#0c1018;--bg3:#101520;--bg4:#141c28;
@@ -58,7 +59,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .fn-exec{color:var(--green);}
 .fn-fw{color:var(--orange);}
 .field-bar{height:5px;background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 100%);border-radius:99px;overflow:hidden;margin:0 4px;}
-.field-fill{height:100%;border-radius:99px;background:var(--border2);transition:width .6s cubic-bezier(.4,0,.2,1);float:right;width:calc(100% - ${pct}%);}
 .field-pct{font-family:var(--mono);font-size:11px;font-weight:700;text-align:right;margin-top:2px;padding:0 4px;}
 /* PART CARDS */
 .part-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
@@ -227,6 +227,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
 <script src="data.js"></script>
 <script>
+Chart.register(ChartDataLabels);
 const PART_COLORS={"Part 1":"#e05555","Part 2":"#d4a017","Part 3":"#3a86e8","Part 4":"#27c47a","Part 5":"#8b5cf6"};
 const FIELD_COLORS={
   Demolish:    {color:"#e03838",g:["#5a0808","#e03838"]},
@@ -311,12 +312,21 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
     data:{labels:labels,datasets:[{data:values,backgroundColor:colors,borderRadius:4,maxBarThickness:46}]},
     options:{
       responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{
-        callbacks:{
+      layout:{padding:{top:24}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
           title:c=>fullLabels?fullLabels[c[0].dataIndex]:c[0].label,
           label:c=>c.parsed.y+"%"
+        }},
+        datalabels:{
+          anchor:"end",
+          align:"top",
+          color:function(ctx){return ctx.dataset.backgroundColor[ctx.dataIndex];},
+          font:{size:11,weight:700,family:"'Inter',sans-serif"},
+          formatter:function(value){return value>0?value+"%":"";}
         }
-      }},
+      },
       scales:{
         y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:10}},grid:{color:"#151e2e"}},
         x:{ticks:{color:"#e2e2e2",font:{size:11,weight:800,family:"'Inter',sans-serif"}},grid:{display:false}}
