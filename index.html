@@ -244,13 +244,13 @@ const FIELD_COLORS={
 
 // LEAFLET
 const BASEMAPS={
-  dark:     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:26}),
-  satellite:L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{maxZoom:26,subdomains:["mt0","mt1","mt2","mt3"]}),
-  streets:  L.tileLayer("https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",{maxZoom:26,subdomains:["mt0","mt1","mt2","mt3"]}),
-  topo:     L.tileLayer("https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",{maxZoom:26,subdomains:["mt0","mt1","mt2","mt3"]}),
-  gray:     L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",{maxZoom:26,subdomains:["mt0","mt1","mt2","mt3"]}),
+  dark:     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:30}),
+  satellite:L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
+  streets:  L.tileLayer("https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
+  topo:     L.tileLayer("https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
+  gray:     L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
 };
-const RIYADH={center:[24.688,46.722],zoom:11};
+const RIYADH={center:[24.688,46.722],zoom:10.5};
 const map=L.map("leaflet-map",{center:RIYADH.center,zoom:RIYADH.zoom,zoomControl:true,scrollWheelZoom:true,maxZoom:26});
 BASEMAPS.dark.addTo(map);
 let activeTile=BASEMAPS.dark;
