@@ -17,6 +17,7 @@
   --text:#fff;--muted:#4a6080;--muted2:#8aa0c0;
   --green:#1ec96e;--orange:#f08020;--red:#e03838;
   --blue:#2878f0;--yellow:#d4b010;--purple:#7848e8;
+  --fw-color:#e0524a;
   --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -35,32 +36,55 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .hdr-date{font-family:var(--mono);font-size:11px;color:var(--muted2);}
 .reset-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:10px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s;}
 .reset-btn:hover{background:var(--bg3);color:#fff;border-color:var(--blue);}
+/* HEADER PROGRESS */
+.hdr-progress{display:flex;align-items:center;gap:8px;}
+.hdr-progress-lbl{font-size:10px;color:#fff;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+.hdr-progress-track{width:180px;height:6px;border-radius:99px;overflow:hidden;position:relative;background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 75%);}
+.hdr-progress-fill{position:absolute;top:0;right:0;bottom:0;height:100%;background:var(--bg4);border-radius:0 99px 99px 0;transition:width .4s;}
+.hdr-progress-pct{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green);min-width:30px;}
+/* STATUS STAT BOXES */
+/* STATUS STAT BOXES (sidebar) */
+.status-wrap{padding:10px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.status-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px;}
+.stat-box{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px;border-radius:7px;}
+.stat-num{font-family:var(--mono);font-weight:800;font-size:16px;line-height:1.1;white-space:nowrap;}
+.stat-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:#fff;margin-top:2px;white-space:nowrap;opacity:.85;}
+.stat-completed{background:rgba(30,201,110,.1);border:1px solid rgba(30,201,110,.28);}
+.stat-completed .stat-num{color:var(--green);}
+.stat-progress{background:rgba(240,128,32,.1);border:1px solid rgba(240,128,32,.28);}
+.stat-progress .stat-num{color:var(--orange);}
+.stat-notstarted{background:rgba(224,56,56,.1);border:1px solid rgba(224,56,56,.28);}
+.stat-notstarted .stat-num{color:var(--red);}
+.stat-total{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);}
+.stat-box.status-on{outline:2px solid #fff;outline-offset:1px;}
+.stat-completed:hover,.stat-progress:hover,.stat-notstarted:hover{filter:brightness(1.25);}
+.stat-total .stat-num{color:#fff;}
 /* APP */
 .app{display:grid;grid-template-columns:400px 1fr 380px;height:calc(100vh - 52px);}
 /* DETAIL (LEFT) */
 .detail{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .dp-hdr{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.dp-box{background:#000208;border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-top:0px;width:100%;height:60px;}
-.dp-title{font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;margin-top:0px;margin-left:1px;margin-right:4px;}
+.dp-box{background:#000208;border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-top:0px;width:100%;min-height:60px;}
+.dp-title{font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;margin-top:0px;margin-left:1px;margin-right:4px;white-space:normal;overflow-wrap:break-word;word-break:break-word;min-width:0;line-height:1.3;}
 .dp-sub{font-size:13px;color:var(--muted2);margin-top:3px;}
 .parts-scroll{flex:1;overflow-y:auto;padding:8px;}
 /* FIELD ROWS */
-.field-row{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .15s;border-radius:4px;}
+.field-row{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .15s;border-radius:4px;}
 .field-row.highlighted{background:rgb(15, 21, 31);border-color:rgba(40,120,240,.2);}
 .field-row:last-child{border-bottom:none;}
 .field-top{display:flex;align-items:center;gap:6px;margin-bottom:4px;padding:0 4px;}
 .field-lbl{font-size:13px;font-weight:700;color:#fff;flex:1;text-transform:uppercase;letter-spacing:.2px;}
 .field-unit{font-size:12px;color:#fff;font-weight:700;background:var(--bg4);padding:1px 5px;border-radius:3px;}
 .field-nums{display:flex;gap:6px;margin-bottom:4px;padding:0 4px;}
-.field-num{flex:1;background:var(--bg4);border-radius:5px;padding:7px;text-align:center;transition:border .15s;border:1px solid transparent;}
+.field-num{flex:1;background:var(--bg4);border-radius:5px;padding:8px 7px;text-align:center;transition:border .15s;border:1px solid transparent;}
 .field-num:hover,.field-num.active{border:1.5px solid #2878f0;}
 .field-num.active{border:1.5px solid #2878f0;}
 .fn-lbl{font-size:11px;color:#d4d0d0;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
 .fn-val{font-family:var(--mono);font-size:13px;font-weight:700;}
 .fn-exec{color:var(--green);}
-.fn-fw{color:var(--orange);}
-.field-bar{height:5px;background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 100%);border-radius:99px;overflow:hidden;margin:0 4px;}
-.field-pct{font-family:var(--mono);font-size:11px;font-weight:700;text-align:right;margin-top:2px;padding:0 4px;}
+.fn-fw{color:var(--fw-color);}
+.field-bar{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;margin:0 4px;}
+.field-pct{font-family:var(--mono);font-size:11px;font-weight:800;text-align:right;margin-top:2px;padding:0 4px;}
 /* PART CARDS */
 .part-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
 .part-card.active{border-color:var(--pc);box-shadow:0 0 0 1px color-mix(in srgb,var(--pc) 20%,transparent);}
@@ -88,16 +112,20 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .zone-eng{font-size:11px;flex:1;}
 .zone-count{font-family:var(--mono);font-size:10px;color:var(--muted2);}
 .loc-wrap{flex:1;overflow-y:auto;}
+.loc-search-wrap{padding:8px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.loc-search-input{width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg3);color:#fff;font-size:11px;font-family:var(--font);outline:none;transition:border-color .15s;}
+.loc-search-input::placeholder{color:var(--muted2);}
+.loc-search-input:focus{border-color:var(--blue);}
 
 /* LOCATION ITEM */
 .loc-item{border-bottom:1px solid var(--border);}
-.loc-btn{display:flex;align-items:center;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
+.loc-btn{display:flex;align-items:flex-start;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
 .loc-btn:hover{background:var(--bg3);}
 .loc-btn.active{background:rgba(40,120,240,.1);}
 .loc-btn.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2878f0,#1ec96e);border-radius:3px 0 0 3px;}
 .loc-ico{width:26px;height:26px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border2);flex-shrink:0;}
 .loc-info{flex:1;min-width:0;text-align:right;}
-.loc-name-txt{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.loc-name-txt{font-size:13px;font-weight:600;color:#fff;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35;}
 .loc-meta{font-size:10px;color:var(--muted2);margin-top:1px;}
 /* PARTS UNDER LOCATION */
 .loc-parts{display:none;padding:6px 13px 8px;background:var(--bg3);border-top:1px solid var(--border);}
@@ -116,17 +144,23 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .chart-bc{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted2);margin-bottom:4px;flex-shrink:0;}
 .chart-bc span{cursor:pointer;transition:color .15s;}
 .chart-bc span:hover{color:var(--blue);}
-.chart-bc span.bc-current{color:#fff;font-weight:700;cursor:default;}
-.chart-bc span.bc-current:hover{color:#fff;}
+.chart-bc span.bc-current{color:#1077d8;font-weight:700;cursor:default;}
+.chart-bc span.bc-current:hover{color:#1077d8;}
 .chart-bc .bc-sep{color:var(--muted);cursor:default;}
-.chart-canvas-wrap{flex:1;min-height:0;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;}
+.chart-canvas-wrap{flex:1;min-height:0;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;overflow-x:auto;overflow-y:hidden;}
+.chart-canvas-inner{height:100%;min-width:100%;}
 .map-wrap{flex:1;padding:8px 10px 10px;min-height:0;}
 .map-panel{height:100%;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:flex;flex-direction:column;}
 #leaflet-map{flex:1;min-height:0;}
 .mp-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 11px;background:var(--bg2);border-top:1px solid var(--border);height:34px;flex-shrink:0;}
-.map-leg{display:flex;gap:8px;align-items:center;}
-.mleg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted2);}
-.mleg-d{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.map-leg{display:flex;gap:18px;align-items:center;}
+.mleg{display:flex;align-items:center;gap:4px;font-size:11px;color:#fff;}
+.mleg-d{width:11px;height:11px;border-radius:2px;flex-shrink:0;}
+.mleg-part{display:flex;align-items:center;gap:6px;font-size:11px;color:#fff;}
+.mleg-part-name{font-weight:600;white-space:nowrap;}
+.mleg-part-track{width:46px;height:5px;border-radius:99px;background:var(--bg4);overflow:hidden;}
+.mleg-part-fill{height:100%;border-radius:99px;transition:width .3s;}
+.mleg-part-pct{font-family:var(--mono);font-weight:700;white-space:nowrap;min-width:28px;}
 .map-info{font-size:10px;color:var(--muted2);font-family:var(--mono);}
 .hide-parts-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:9px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s;}
 .hide-parts-btn:hover{border-color:var(--blue);color:#fff;}
@@ -152,9 +186,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   <div class="hdr-brand">
     <div class="hdr-logo">GIS</div>
     <div>
-      <div class="hdr-t1">ESTC — Construction Progress Dashboard</div>
+      <div class="hdr-t1">ESTC Construction Progress Dashboard</div>
       <div class="hdr-t2">Yuksel Saudia</div>
     </div>
+  </div>
+  <div class="hdr-progress" id="hdr-progress">
+    <span class="hdr-progress-lbl">Overall Progress</span>
+    <div class="hdr-progress-track"><div class="hdr-progress-fill" id="hdr-progress-fill" style="width:100%"></div></div>
+    <span class="hdr-progress-pct" id="hdr-progress-pct">0%</span>
   </div>
   <div class="hdr-right">
     <div class="hdr-date" id="hdr-date">—</div>
@@ -184,9 +223,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
           <div class="map-leg">
             <div class="mleg"><div class="mleg-d" style="background:#1a1e28;border:1px solid #2a3040"></div>Asphalt</div>
             <div class="mleg"><div class="mleg-d" style="background:#2a2a3a;border:1px solid #404050"></div>Interlock</div>
-            <div class="mleg"><div class="mleg-d" style="background:#e05555;opacity:.75"></div>Part 1</div>
-            <div class="mleg"><div class="mleg-d" style="background:#d4a017;opacity:.75"></div>Part 2</div>
-            <div class="mleg"><div class="mleg-d" style="background:#3a86e8;opacity:.75"></div>Part 3</div>
+            <div class="map-leg" id="map-leg-parts"></div>
           </div>
           <button class="hide-parts-btn" id="toggle-parts-btn" onclick="toggleParts()">Hide Parts</button>
           <div class="map-info" id="map-info">Riyadh Overview</div>
@@ -206,24 +243,36 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <div class="chart-wrap" id="chart-wrap">
       <div class="chart-bc" id="chart-bc"></div>
       <div class="chart-canvas-wrap">
-        <canvas id="main-chart"></canvas>
+        <div class="chart-canvas-inner" id="chart-canvas-inner"><canvas id="main-chart"></canvas></div>
       </div>
     </div>
   </main>
 
   <!-- RIGHT: NAV -->
   <aside class="nav">
+    <div class="status-wrap">
+      <div class="sec-lbl">Status</div>
+      <div class="status-stats">
+        <div class="stat-box stat-completed" onclick="selectStatus('Completed')" style="cursor:pointer"><div class="stat-num" id="stat-completed">0</div><div class="stat-lbl">Completed</div></div>
+        <div class="stat-box stat-progress" onclick="selectStatus('In Progress')" style="cursor:pointer"><div class="stat-num" id="stat-inprogress">0</div><div class="stat-lbl">In Progress</div></div>
+        <div class="stat-box stat-notstarted" onclick="selectStatus('Not Started')" style="cursor:pointer"><div class="stat-num" id="stat-notstarted">0</div><div class="stat-lbl">Not Started</div></div>
+        <div class="stat-box stat-total"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Total</div></div>
+      </div>
+    </div>
     <div class="zone-wrap">
       <div class="sec-lbl">Zones</div>
       <div class="zone-btns" id="zone-btns"></div>
+    </div>
+    <div class="loc-search-wrap">
+      <input type="text" id="loc-search" class="loc-search-input" placeholder="🔍 Search locations..." oninput="filterLocList(this.value)">
     </div>
     <div class="loc-wrap" id="loc-wrap"></div>
   </aside>
 
 <div class="tt" id="tt">
-  <div class="tt-loc" id="tt-loc" style="font-size:12px;color:#ffffff;margin-bottom:2px;font-weight: bold;"></div>
-  <div class="tt-title" id="tt-n">—</div>
-  <div class="tt-row"><span style="font-size:12px;color:#fff;font-weight: bold;">TD</span><span class="tt-val" id="tt-td" style="font-size:12px;color:#fff;">—</span></div>
+<div class="tt-title" id="tt-n" style="font-size:13px;text-align:right;direction:rtl;">—</div>
+  <div class="tt-row"><span style="font-size:11px;color:#8aa0c0;font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
+<div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Progress</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
 </div>
 
 <script src="data.js"></script>
@@ -232,15 +281,49 @@ Chart.register(ChartDataLabels);
 const PART_COLORS={"Part 1":"#e05555","Part 2":"#d4a017","Part 3":"#3a86e8","Part 4":"#27c47a","Part 5":"#8b5cf6"};
 const FIELD_COLORS={
   Demolish:    {color:"#e03838",g:["#5a0808","#e03838"]},
+  Excavation:  {color:"#b8611a",g:["#3a1e00","#b8611a"]},
   Subgrade:    {color:"#f08020",g:["#5a2800","#f08020"]},
   Aggregate_BC:{color:"#d4b010",g:["#483800","#d4b010"]},
   Asphalt_BC:  {color:"#1ec96e",g:["#003828","#1ec96e"]},
   Curbstone:   {color:"#10c8d8",g:["#001838","#10c8d8"]},
   Interlock:   {color:"#2878f0",g:["#001858","#2878f0"]},
   Milling:     {color:"#7848e8",g:["#200848","#7848e8"]},
+  MC_1:        {color:"#c04898",g:["#380020","#c04898"]},
   RC_2:        {color:"#e8a820",g:["#483000","#e8a820"]},
   Asphalt_WC:  {color:"#27c47a",g:["#003820","#27c47a"]},
 };
+
+// ✏️ عدّل الأرقام دي يدويًا كل مرة تحدّث حالة اللوكيشنز (مفيش طريقة تلقائية لحسابها من الـ GDB حاليًا)
+// ملحوظة: أرقام Completed/In Progress/Not Started/Total بقت تلقائية 100% من حقل STATUS في الـ GDB
+// (شوفي دالة computeStatusCounts) — مبقاش فيه رقم تعدليه يدوي هنا.
+
+function computeStatusCounts(){
+  const counts={"Completed":0,"In Progress":0,"Not Started":0};
+  let total=0;
+  Object.values(GDB_DATA.zones).forEach(zd=>{
+    Object.values(zd.locations||{}).forEach(loc=>{
+      total++;
+      if(counts.hasOwnProperty(loc.status)) counts[loc.status]++;
+    });
+  });
+  return {completed:counts["Completed"],inProgress:counts["In Progress"],notStarted:counts["Not Started"],total};
+}
+
+function updateHeaderStats(){
+  const t=calcTotals(GDB_DATA.zones);
+  let se=0,st=0;
+  Object.values(t).forEach(v=>{se+=v.executed||0;st+=v.total||0;});
+  const pct=st>0?Math.min(Math.round((se/st)*100),100):0;
+  const col=barColor(pct);
+  document.getElementById("hdr-progress-fill").style.width=(100-pct)+"%";
+  document.getElementById("hdr-progress-pct").textContent=pct+"%";
+  document.getElementById("hdr-progress-pct").style.color=col;
+  const sc=computeStatusCounts();
+  document.getElementById("stat-completed").textContent=sc.completed;
+  document.getElementById("stat-inprogress").textContent=sc.inProgress;
+  document.getElementById("stat-notstarted").textContent=sc.notStarted;
+  document.getElementById("stat-total").textContent=sc.total;
+}
 
 // LEAFLET
 const BASEMAPS={
@@ -250,7 +333,7 @@ const BASEMAPS={
   topo:     L.tileLayer("https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
   gray:     L.tileLayer("https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",{maxZoom:30,subdomains:["mt0","mt1","mt2","mt3"]}),
 };
-const RIYADH={center:[24.688,46.722],zoom:10.5};
+const RIYADH={center:[24.688,46.722],zoom:10.2};
 const map=L.map("leaflet-map",{center:RIYADH.center,zoom:RIYADH.zoom,zoomControl:true,scrollWheelZoom:true,maxZoom:26});
 BASEMAPS.dark.addTo(map);
 let activeTile=BASEMAPS.dark;
@@ -261,8 +344,54 @@ function setBasemap(n,btn){
 
 const LG={asphalt:L.layerGroup().addTo(map),interlock:L.layerGroup().addTo(map),parts:L.layerGroup()};
 LG.parts.addTo(map);
-let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,allPartPolys=[];
+let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,activeStatus=null,allPartPolys=[];
 let mainChart=null;
+
+function getScopeZones(){
+  const base = activeZone ? {[activeZone]:GDB_DATA.zones[activeZone]} : GDB_DATA.zones;
+  if(!activeStatus) return base;
+  const filtered={};
+  Object.entries(base).forEach(([zn,zd])=>{
+    const locs={};
+    Object.entries(zd.locations||{}).forEach(([ln,loc])=>{
+      if(loc.status===activeStatus) locs[ln]=loc;
+    });
+    if(Object.keys(locs).length>0) filtered[zn]={locations:locs};
+  });
+  return filtered;
+}
+
+function selectStatus(status){
+  activeStatus = (activeStatus===status) ? null : status;
+  activeLoc=null;activePart=null;activeFilter=null;
+  document.querySelectorAll(".stat-box").forEach(b=>b.classList.remove("status-on"));
+  if(activeStatus){
+    const statusClassMap={"Completed":"stat-completed","In Progress":"stat-progress","Not Started":"stat-notstarted"};
+    const el=document.querySelector("."+statusClassMap[status]);
+    if(el) el.classList.add("status-on");
+  }
+  buildLocList();
+  clearMap();
+  const zones=getScopeZones();
+  const totalLocs=Object.values(zones).reduce((s,zd)=>s+Object.keys(zd.locations||{}).length,0);
+  renderAggregated(
+    activeStatus?activeStatus:(activeZone||"Overall Progress"),
+    activeStatus?`${totalLocs} Locations`:(activeZone?`${totalLocs} Locations`:"All Zones"),
+    zones,true
+  );
+  const b=drawAllLocs();
+  if(b.length>0){
+    try{ map.flyToBounds(L.latLngBounds(b),{padding:[40,40],maxZoom:15,duration:.8}); }catch(e){}
+  }
+  document.getElementById("map-info").textContent = activeStatus ? (activeStatus+(activeZone?" · "+activeZone:"")) : (activeZone||"Riyadh Overview");
+  if(activeStatus){
+    showFilteredLocationsChart();
+  } else if(activeZone){
+    showLocationsChart(activeZone);
+  } else {
+    showZonesChart();
+  }
+}
 
 function getZonePct(zoneData){
   const t=calcTotals({"_":zoneData});
@@ -289,28 +418,81 @@ function getPartPct(part){
 function getFieldPct(d){
   return (d.total>0 && d.executed!=null)?Math.min(Math.round((d.executed/d.total)*100),100):0;
 }
+function updatePartsLegend(){
+  const el=document.getElementById("map-leg-parts");
+  if(!el)return;
+  const zones=getScopeZones();
+  const sums={};
+  Object.values(zones).forEach(zd=>{
+    Object.entries(zd.locations||{}).forEach(([ln,loc])=>{
+      if(activeLoc && ln!==activeLoc)return;
+      loc.parts.forEach(part=>{
+        if(!sums[part.name])sums[part.name]={exec:0,total:0};
+        Object.values(part.data).forEach(d=>{
+          sums[part.name].exec+=d.executed||0;
+          sums[part.name].total+=d.total||0;
+        });
+      });
+    });
+  });
+  const names=Object.keys(sums).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  el.innerHTML=names.map(pn=>{
+    const s=sums[pn];
+    const pct=s.total>0?Math.round((s.exec/s.total)*100):0;
+    const c=PART_COLORS[pn]||"#aaa";
+    return `<div class="mleg-part"><span class="mleg-part-name" style="color:${c}">${pn}</span><div class="mleg-part-track"><div class="mleg-part-fill" style="width:${pct}%;background:${c}"></div></div><span class="mleg-part-pct" style="color:${c}">${pct}%</span></div>`;
+  }).join("");
+}
 function wrapLabel(text){
   const words=text.split(" ");
   if(words.length<=1) return [text];
-  const mid=Math.ceil(words.length/2);
-  const line1=words.slice(0,mid).join(" ");
-  const line2=words.slice(mid).join(" ");
-  return [line1,line2];
+  const lineCount = words.length>=6 ? 3 : 2;
+  const targetLen=Math.ceil(text.length/lineCount);
+  const lines=[];
+  let current="";
+  words.forEach(w=>{
+    if(current && (current.length+1+w.length)>targetLen && lines.length<lineCount-1){
+      lines.push(current);
+      current=w;
+    } else {
+      current=current?current+" "+w:w;
+    }
+  });
+  if(current) lines.push(current);
+  return lines;
 }
 
 function barColor(pct){
-  if(pct>=80) return "#1ec96e";
+  if(pct>=75) return "#1ec96e";
   if(pct>=50) return "#d4b010";
   if(pct>=25) return "#f08020";
   return "#e03838";
 }
 
 function renderChart(labels,values,colors,onClickFn,fullLabels){
+  const inner=document.getElementById("chart-canvas-inner");
+  const wrap=document.getElementById("main-chart").closest(".chart-canvas-wrap");
+  const minPerBar=95; // أقل مسافة مريحة لكل عمود عشان الأسماء العربية الطويلة متتلزقش
+  const neededWidth=values.length*minPerBar;
+  const availWidth=wrap?wrap.clientWidth:0;
+  inner.style.width=neededWidth>availWidth?neededWidth+"px":"100%";
+  if(wrap) wrap.scrollLeft=0;
   const ctx=document.getElementById("main-chart").getContext("2d");
   if(mainChart) mainChart.destroy();
+  const gradientFill=(context)=>{
+    const {chart}=context;
+    const {ctx,chartArea}=chart;
+    if(!chartArea) return "#e03838";
+    const g=ctx.createLinearGradient(0,chartArea.bottom,0,chartArea.top);
+    g.addColorStop(0,"#e03838");
+    g.addColorStop(0.25,"#f08020");
+    g.addColorStop(0.5,"#d4b010");
+    g.addColorStop(0.75,"#1ec96e");
+    return g;
+  };
   mainChart=new Chart(ctx,{
     type:"bar",
-    data:{labels:labels,datasets:[{data:values,backgroundColor:colors,borderRadius:4,maxBarThickness:46}]},
+    data:{labels:labels,datasets:[{data:values,backgroundColor:gradientFill,borderRadius:4,maxBarThickness:46,categoryPercentage:0.7,barPercentage:0.85}]},
     options:{
       responsive:true,maintainAspectRatio:false,
       layout:{padding:{top:24}},
@@ -323,14 +505,14 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
         datalabels:{
           anchor:"end",
           align:"top",
-          color:function(ctx){return ctx.dataset.backgroundColor[ctx.dataIndex];},
+          color:function(ctx){return colors[ctx.dataIndex];},
           font:{size:11,weight:700,family:"'Inter',sans-serif"},
-          formatter:function(value){return value>0?value+"%":"";}
+          formatter:function(value){return (value!=null?value:0)+"%";}
         }
       },
       scales:{
         y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:10}},grid:{color:"#151e2e"}},
-        x:{ticks:{color:"#e2e2e2",font:{size:11,weight:800,family:"'Inter',sans-serif"}},grid:{display:false}}
+        x:{ticks:{color:"#e2e2e2",font:{size:10,weight:800,family:"'Inter',sans-serif"},maxRotation:0,minRotation:0,autoSkip:false},grid:{display:false}}
       },
       onClick:(evt,elems)=>{
         if(elems.length>0 && onClickFn) onClickFn(elems[0].index);
@@ -346,6 +528,31 @@ function renderBreadcrumb(items){
     const isLast=i===items.length-1;
     return `<span class="${isLast?'bc-current':''}" ${isLast?'':`onclick="${it.action}"`}>${it.label}</span>${sep}`;
   }).join("");
+}
+
+function showFilteredLocationsChart(){
+  const zones=getScopeZones();
+  const entries=[];
+  Object.entries(zones).forEach(([zn,zd])=>{
+    Object.entries(zd.locations||{}).forEach(([ln,loc])=>{
+      entries.push({zn,ln,loc});
+    });
+  });
+  if(entries.length===0){
+    if(mainChart){mainChart.destroy();mainChart=null;}
+    renderBreadcrumb([{label:activeStatus||"All Zones",action:""}]);
+    return;
+  }
+  const labels=entries.map(e=>wrapLabel(e.ln));
+  const fullLabels=entries.map(e=>e.ln);
+  const values=entries.map(e=>getLocPct(e.loc));
+  const colors=values.map(barColor);
+  renderChart(labels,values,colors,(idx)=>{
+    const e=entries[idx];
+    const btn=document.getElementById("loc-btn-"+e.ln);
+    if(btn) selectLoc(e.zn,e.ln,btn);
+  },fullLabels);
+  renderBreadcrumb([{label:activeStatus,action:""}]);
 }
 
 function showZonesChart(){
@@ -385,7 +592,7 @@ function showPartsChart(zoneName,locName){
   const loc=GDB_DATA.zones[zoneName].locations[locName];
   const partNames=loc.parts.map(p=>p.name);
   const values=loc.parts.map(p=>getPartPct(p));
-  const colors=values.map((v,i)=>PART_COLORS[partNames[i]]||barColor(v));
+  const colors=values.map(v=>barColor(v));
   renderChart(partNames.map(p=>wrapLabel(p)),values,colors,(idx)=>{
     const pn=partNames[idx];
     const pill=document.getElementById("pill-"+locName+"-"+pn.replace(" ","-"));
@@ -405,7 +612,7 @@ function showFieldsChart(zoneName,locName,part){
     const d=part.data[fk];
     return d?getFieldPct(d):0;
   });
-  const colors=fieldKeys.map(fk=>(FIELD_COLORS[fk]||{color:"#aaa"}).color);
+  const colors=values.map(v=>barColor(v));
   renderChart(labels,values,colors,null);
   renderBreadcrumb([
     {label:"All Zones",action:"resetView()"},
@@ -455,7 +662,7 @@ function drawLoc(loc,zoneName,locName,collectBounds){
       try{
         const poly=L.polygon(ring,{color:c,weight:1.8,fillColor:c,fillOpacity:.32,opacity:.88});
         poly.on("click",()=>scrollToPartCard(part.name));
-        poly.on("mouseover",e=>{showTT(e.originalEvent,part.name,part.td,locName);poly.setStyle({weight:2.8});});
+        poly.on("mouseover",e=>{showTT(e.originalEvent,zoneName,locName,getLocPct(loc));poly.setStyle({weight:2.8});});
         poly.on("mouseout",()=>{hideTT();poly.setStyle({weight:1.8});});
         poly.addTo(LG.parts);allPartPolys.push({poly,partName:part.name});
         if(collectBounds)addRingToBounds(ring);
@@ -465,8 +672,8 @@ function drawLoc(loc,zoneName,locName,collectBounds){
   return bounds; 
 }
 
-function drawAllLocs(zoneFilter){
-  const zones = zoneFilter ? {[zoneFilter]: GDB_DATA.zones[zoneFilter]} : GDB_DATA.zones;
+function drawAllLocs(){
+  const zones = getScopeZones();
   const globalBounds = [];
 
   Object.entries(zones).forEach(([zn,zd])=>{
@@ -524,10 +731,10 @@ function fieldRowHTML(fk,fi,exec,fw,total,pct,fc,clickable,highlighted){
     <div class="fn-val fn-fw">${fw!=null?Math.round(fw).toLocaleString():"—"}</div>
   </div>
 </div>
-    <div class="field-bar" style="background:var(--border2);position:relative;">
-  <div style="position:absolute;left:0;top:0;bottom:0;width:${pct||0}%;background:linear-gradient(90deg,#6c3b9e,#3a86e8,#1ec96e,#d4b010,#f08020,#e03838);border-radius:99px;"></div>
+    <div class="field-bar" style="background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 75%);position:relative;overflow:hidden;">
+  <div style="position:absolute;top:0;right:0;bottom:0;width:${pct!=null?100-pct:100}%;background:var(--border2);border-radius:0 99px 99px 0;"></div>
 </div>
-<div class="field-pct" style="color:${fc.color}">${pct!=null?pct+"%":"—"}</div>
+<div class="field-pct" style="color:${pct!=null?barColor(pct):'#8aa0c0'}">${pct!=null?pct+"%":"—"}</div>
   </div>`;
 }
 
@@ -549,6 +756,7 @@ function renderAggregated(title,sub,zones,clickable){
     return fieldRowHTML(fk,fi,t.executed,t.front_work,t.total,pct,fc,clickable,activeFilter===fk);
   }).join("");
   document.getElementById("parts-detail").innerHTML=html;
+  updatePartsLegend();
 
   if(activeFilter){
     const [field,vtype]=activeFilter.split('||');
@@ -578,6 +786,7 @@ document.getElementById("dp-title").style.marginTop="0px";
       const pct=(t.total>0 && t.executed!=null)?Math.round((t.executed/t.total)*100):null;
       return fieldRowHTML(fk,fi,t.executed,t.front_work,t.total,pct,fc,false,false);
     }).join("");
+  updatePartsLegend();
 }
 
 function renderPartDetail(part){
@@ -591,6 +800,7 @@ document.getElementById("dp-sub").textContent="";
       const pct=(d.total>0 && d.executed!=null)?Math.round((d.executed/d.total)*100):null;
       return fieldRowHTML(fk,fi,d.executed,d.front_work,d.total,pct,fc,false,false);
     }).join("");
+  updatePartsLegend();
 }
 
 // FILTER
@@ -604,7 +814,7 @@ function filterByField(fk, valueType){
     document.querySelectorAll(`[onclick="filterByField('${field}','${vtype}')"]`).forEach(e=>e.classList.add("active"));
   }
   
-  const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+  const zones=getScopeZones();
   clearMap();
   
   if(activeFilter){
@@ -668,7 +878,7 @@ function clearFilter(){
   clearMap();
   drawAllLocs(activeZone);
   document.querySelectorAll(".loc-item").forEach(i=>i.style.display="");
-  const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+  const zones=getScopeZones();
   renderAggregated(activeZone||"Overall Progress",activeZone?"Locations":"All Zones",zones,true);
   document.querySelectorAll(".field-num").forEach(e=>e.classList.remove("active"));
 }
@@ -678,7 +888,8 @@ function buildZones(){
   const el=document.getElementById("zone-btns");el.innerHTML="";
   const allBtn=document.createElement("button");
   allBtn.className="zone-btn on";allBtn.id="zone-btn-ALL";
-  allBtn.innerHTML=`<div class="zone-dot"></div><span class="zone-eng">All Zones</span><span class="zone-count">${Object.keys(GDB_DATA.zones).length} zones</span>`;
+  const totalLocs=Object.values(GDB_DATA.zones).reduce((s,zd)=>s+Object.keys(zd.locations||{}).length,0);
+  allBtn.innerHTML=`<div class="zone-dot"></div><span class="zone-eng">All Zones</span><span class="zone-count">${totalLocs} Locations</span>`;
   allBtn.onclick=()=>selectZone(null,allBtn);
   el.appendChild(allBtn);
   Object.entries(GDB_DATA.zones).forEach(([zn,zd])=>{
@@ -729,7 +940,7 @@ if(!zoneName){
 // LOCATIONS
 function buildLocList(){
   const el=document.getElementById("loc-wrap");el.innerHTML="";
-  const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+  const zones=getScopeZones();
   Object.entries(zones).forEach(([zn,zd])=>{
     Object.entries(zd.locations).forEach(([ln,loc])=>{
       const item=document.createElement("div");item.className="loc-item";item.id="loc-item-"+ln;
@@ -737,7 +948,9 @@ function buildLocList(){
       const btn=document.createElement("div");
       btn.className="loc-btn";btn.id="loc-btn-"+ln;
       btn.setAttribute("data-zone",zn);
-      btn.innerHTML=`<div class="loc-ico">📍</div>
+      const locPct=getLocPct(loc);
+      const icoColor=locPct>=100?"var(--green)":(locPct<=0?"var(--red)":"var(--orange)");
+      btn.innerHTML=`<div class="loc-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="${icoColor}"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 12 7.3 12.3.2.2.5.3.7.3s.5-.1.7-.3C13 22 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg></div>
         <div class="loc-info"><div class="loc-name-txt">${ln}</div><div class="loc-meta">${loc.parts.length} Parts</div></div>`;
       btn.onclick=()=>selectLoc(zn,ln,btn);
       // Parts pills under location
@@ -757,6 +970,23 @@ function buildLocList(){
       el.appendChild(item);
     });
   });
+  filterLocList(document.getElementById("loc-search")?document.getElementById("loc-search").value:"");
+}
+
+function normalizeAr(s){
+  return (s||"").toLowerCase()
+    .replace(/[أإآا]/g,"ا")
+    .replace(/ة/g,"ه")
+    .replace(/ى/g,"ي")
+    .replace(/[\u064B-\u0652]/g,""); // remove tashkeel
+}
+function filterLocList(q){
+  const query=normalizeAr((q||"").trim());
+  document.querySelectorAll(".loc-item").forEach(item=>{
+    const nameEl=item.querySelector(".loc-name-txt");
+    const name=nameEl?normalizeAr(nameEl.textContent):"";
+    item.style.display=(!query||name.includes(query))?"":"none";
+  });
 }
 
 function selectLoc(zoneName,locName,btn){
@@ -767,7 +997,7 @@ function selectLoc(zoneName,locName,btn){
     document.querySelectorAll(".loc-parts").forEach(e=>e.classList.remove("open"));
     
     clearMap();
-    const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+    const zones=getScopeZones();
     Object.keys(zones).forEach(zName=>{
       Object.keys(zones[zName].locations||{}).forEach(lName=>{
         drawLoc(zones[zName].locations[lName], zName, lName, false);
@@ -802,7 +1032,7 @@ function selectLoc(zoneName,locName,btn){
   clearMap(); // بننظف الخريطة الأول
   
   let targetBounds = []; // مصفوفة لحفظ حدود اللوكيشن المختار فقط عشان نزوّم عليه
-  const zones = activeZone ? {[activeZone]: GDB_DATA.zones[activeZone]} : GDB_DATA.zones;
+  const zones = getScopeZones();
   
   // بنلف نرسم "كل اللوكيشنات" المتاحة في الزون الحالي أو المشروع كله عشان ميتخفوش
   Object.entries(zones).forEach(([zName, zData]) => {
@@ -840,7 +1070,7 @@ function selectPart(zoneName, locName, partName, pill) {
     
     // 1. تنظيف الخريطة تماماً من الفلتر القديم
     clearMap();
-const zones = activeZone ? {[activeZone]: GDB_DATA.zones[activeZone]} : GDB_DATA.zones;
+const zones = getScopeZones();
 Object.entries(zones).forEach(([zn, zd]) => {
   Object.entries(zd.locations).forEach(([ln, ld]) => {
     drawLoc(ld, zn, ln, false);
@@ -910,7 +1140,7 @@ Object.entries(zones).forEach(([zn, zd]) => {
 function scrollToPartCard(pn){
   // If a location is selected, show part detail
   if(activeLoc){
-    const zones=activeZone?{[activeZone]:GDB_DATA.zones[activeZone]}:GDB_DATA.zones;
+    const zones=getScopeZones();
     Object.entries(zones).forEach(([zn,zd])=>{
       if(zd.locations[activeLoc]){
         const part=zd.locations[activeLoc].parts.find(p=>p.name===pn);
@@ -941,12 +1171,15 @@ function resetView() {
   activeLoc = null;
   activePart = null;
   activeZone = null; // بيشيل الفلتر حتى لو كنت واقف جوه زون معين عشان يعرض الرياض كاملة
+  activeStatus = null; // بيشيل فلتر الحالة (Completed/In Progress/Not Started) لو مفعّل
 
   // 2. إزالة تأثير الـ Active والإغلاق من كل الزراير والقوائم في الواجهة
   document.querySelectorAll(".loc-btn").forEach(e => e.classList.remove("active"));
   document.querySelectorAll(".loc-parts").forEach(e => e.classList.remove("open"));
   document.querySelectorAll(".part-pill").forEach(e => e.classList.remove("active-part"));
   document.querySelectorAll(".zone-card").forEach(e => e.classList.remove("active")); // لو عندك كروت زونات
+  document.querySelectorAll(".stat-box").forEach(e => e.classList.remove("status-on"));
+  buildLocList();
 
   // 3. تنظيف الخريطة وإعادة رسم "كل شيء" بدون أي فلترة
   clearMap();
@@ -966,12 +1199,14 @@ function resetView() {
 }
 
 const tt=document.getElementById("tt");
-function showTT(e,name,td,locName){
-  document.getElementById("tt-loc").textContent=locName||"";
+function showTT(e,zoneName,locName,pct){
   const ttN=document.getElementById("tt-n");
-  ttN.textContent=name;
-  ttN.style.color=PART_COLORS[name]||"#fff";
-  document.getElementById("tt-td").textContent=td!=null?td.toLocaleString()+" m²":"—";
+  ttN.textContent=locName||"";
+  ttN.style.color="#fff";
+  document.getElementById("tt-loc").textContent=zoneName||"—";
+  const ttTd=document.getElementById("tt-td");
+  ttTd.textContent=pct!=null?pct+"%":"—";
+  ttTd.style.color=pct!=null?barColor(pct):"#8aa0c0";
   tt.style.display="block";tt.style.left=(e.clientX+14)+"px";tt.style.top=(e.clientY-10)+"px";
 }
 function hideTT(){tt.style.display="none";}
@@ -982,6 +1217,7 @@ tick();setInterval(tick,60000);
 
 buildZones();buildLocList();
 document.getElementById("zone-btn-ALL").click();
+updateHeaderStats();
 </script>
 </body>
 </html>
