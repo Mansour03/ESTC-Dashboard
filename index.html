@@ -270,9 +270,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   </aside>
 
 <div class="tt" id="tt">
-<div class="tt-title" id="tt-n" style="font-size:13px;text-align:right;direction:rtl;">—</div>
+  <div class="tt-title" id="tt-n" style="font-size:13px;">—</div>
   <div class="tt-row"><span style="font-size:11px;color:#8aa0c0;font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
-<div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Progress</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
+  <div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Overall</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
 </div>
 
 <script src="data.js"></script>
@@ -949,7 +949,8 @@ function buildLocList(){
       btn.className="loc-btn";btn.id="loc-btn-"+ln;
       btn.setAttribute("data-zone",zn);
       const locPct=getLocPct(loc);
-      const icoColor=locPct>=100?"var(--green)":(locPct<=0?"var(--red)":"var(--orange)");
+      const statusColorMap={"Completed":"var(--green)","In Progress":"var(--orange)","Not Started":"var(--red)"};
+      const icoColor=statusColorMap[loc.status]||"var(--red)";
       btn.innerHTML=`<div class="loc-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="${icoColor}"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 12 7.3 12.3.2.2.5.3.7.3s.5-.1.7-.3C13 22 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg></div>
         <div class="loc-info"><div class="loc-name-txt">${ln}</div><div class="loc-meta">${loc.parts.length} Parts</div></div>`;
       btn.onclick=()=>selectLoc(zn,ln,btn);
