@@ -117,6 +117,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .loc-search-input::placeholder{color:var(--muted2);}
 .loc-search-input:focus{border-color:var(--blue);}
 
+/* MINI LOCATION TOOLTIP */
+.mini-tt{position:fixed;background:rgba(12,16,24,.72);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:4px 9px;font-size:10.5px;pointer-events:none;display:none;z-index:9999;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4);direction:rtl;}
+.mini-tt-zone{color:#8d8b8b;font-weight:600;}
+.mini-tt-pct{font-family:var(--mono);font-weight:700;margin-right:6px;opacity:.9;}
 /* LOCATION ITEM */
 .loc-item{border-bottom:1px solid var(--border);}
 .loc-btn{display:flex;align-items:flex-start;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
@@ -273,6 +277,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   <div class="tt-title" id="tt-n" style="font-size:13px;text-align:right;direction:rtl;">—</div>
   <div class="tt-row"><span style="font-size:11px;color:#8aa0c0;font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
   <div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Progress</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
+</div>
+
+<div class="mini-tt" id="mini-tt">
+  <span class="mini-tt-pct" id="mini-tt-pct">—</span><span class="mini-tt-zone" id="mini-tt-zone">—</span>
 </div>
 
 <script src="data.js"></script>
@@ -954,6 +962,9 @@ function buildLocList(){
       btn.innerHTML=`<div class="loc-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="${icoColor}"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 12 7.3 12.3.2.2.5.3.7.3s.5-.1.7-.3C13 22 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg></div>
         <div class="loc-info"><div class="loc-name-txt">${ln}</div><div class="loc-meta">${loc.parts.length} Parts</div></div>`;
       btn.onclick=()=>selectLoc(zn,ln,btn);
+      btn.onmouseenter=(e)=>showMiniTT(e,zn,locPct);
+      btn.onmousemove=(e)=>positionMiniTT(e);
+      btn.onmouseleave=hideMiniTT;
       // Parts pills under location
       const partsDiv=document.createElement("div");
       partsDiv.className="loc-parts";partsDiv.id="loc-parts-"+ln;
@@ -1212,6 +1223,23 @@ function showTT(e,zoneName,locName,pct){
 }
 function hideTT(){tt.style.display="none";}
 map.on("mousemove",e=>{if(tt.style.display==="block"){tt.style.left=(e.originalEvent.clientX+14)+"px";tt.style.top=(e.originalEvent.clientY-10)+"px";}});
+
+// MINI TOOLTIP (location list — sidebar right)
+const miniTT=document.getElementById("mini-tt");
+function showMiniTT(e,zoneName,pct){
+  document.getElementById("mini-tt-zone").textContent=zoneName||"—";
+  const pctEl=document.getElementById("mini-tt-pct");
+  pctEl.textContent=pct!=null?pct+"%":"—";
+  pctEl.style.color=pct!=null?barColor(pct):"#8aa0c0";
+  miniTT.style.display="block";
+  positionMiniTT(e);
+}
+function positionMiniTT(e){
+  miniTT.style.left=(e.clientX-14)+"px";
+  miniTT.style.top=(e.clientY-30)+"px";
+  miniTT.style.transform="translateX(-100%)";
+}
+function hideMiniTT(){miniTT.style.display="none";}
 
 function tick(){document.getElementById("hdr-date").textContent=new Date().toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});}
 tick();setInterval(tick,60000);
