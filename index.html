@@ -664,7 +664,10 @@ function drawLoc(loc,zoneName,locName,collectBounds){
       if(!ring||ring.length<3)return;
       try{
         const poly=L.polygon(ring,{color:c,weight:1.8,fillColor:c,fillOpacity:.32,opacity:.88});
-        poly.on("click",()=>scrollToPartCard(part.name));
+        poly.on("click",()=>{
+          const locBtn=document.getElementById("loc-btn-"+locName);
+          if(locBtn) locBtn.click();
+        });
         poly.on("mouseover",e=>{showTT(e.originalEvent,zoneName,locName,getLocPct(loc));poly.setStyle({weight:2.8});});
         poly.on("mouseout",()=>{hideTT();poly.setStyle({weight:1.8});});
         poly.addTo(LG.parts);allPartPolys.push({poly,partName:part.name});
