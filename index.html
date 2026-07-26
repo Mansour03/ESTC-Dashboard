@@ -342,7 +342,7 @@ function setBasemap(n,btn){
   map.removeLayer(activeTile);activeTile=BASEMAPS[n];activeTile.addTo(map);
 }
 
-const LG={parts:L.layerGroup()};
+const LG={parts:L.layerGroup(),flash:L.layerGroup().addTo(map)};
 LG.parts.addTo(map);
 let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,activeStatus=null,allPartPolys=[];
 let mainChart=null;
@@ -626,8 +626,40 @@ let partsVisible=true;
 // DRAW
 function clearMap(){
   LG.parts.clearLayers();allPartPolys=[];
+  LG.flash.clearLayers();
   map.removeLayer(LG.parts);map.addLayer(LG.parts);
   if(!partsVisible){map.removeLayer(LG.parts);}
+}
+
+function flashLocation(loc){
+  if(!LG.flash||!loc||!loc.parts) return;
+  LG.flash.clearLayers();
+  const flashLayers=[];
+  loc.parts.forEach(part=>{
+    if(!part.rings||!part.rings.length) return;
+    const isDeep=Array.isArray(part.rings[0])&&Array.isArray(part.rings[0][0]);
+    const ringsArr=isDeep?part.rings:[part.rings];
+    ringsArr.forEach(ring=>{
+      if(!ring||ring.length<3) return;
+      try{
+        const poly=L.polygon(ring,{color:"#fff",weight:4,fillColor:"#fff",fillOpacity:0,opacity:1,interactive:false});
+        poly.addTo(LG.flash);
+        flashLayers.push(poly);
+      }catch(e){}
+    });
+  });
+  if(!flashLayers.length) return;
+  let step=0;
+  const totalSteps=2; // 1 نبضات (تظهر/تختفي)
+  const iv=setInterval(()=>{
+    step++;
+    const on = step % 2 === 1;
+    flashLayers.forEach(p=>p.setStyle({opacity:on?1:0,fillOpacity:on?0.22:0,weight:on?5:2}));
+    if(step>=totalSteps){
+      clearInterval(iv);
+      LG.flash.clearLayers();
+    }
+  },280);
 }
 
 function drawLoc(loc,zoneName,locName,collectBounds){
@@ -1057,6 +1089,7 @@ function selectLoc(zoneName,locName,btn){
       map.flyToBounds(L.latLngBounds(targetBounds),{padding:[28,28],maxZoom:17,duration:.8});
     }catch(e){}
   }
+  setTimeout(()=>flashLocation(loc),750);
   
   renderLocOverall(loc,locName);
   document.getElementById("map-info").textContent=locName;
