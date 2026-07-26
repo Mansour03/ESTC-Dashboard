@@ -119,15 +119,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
 /* LOCATION ITEM */
 .loc-item{border-bottom:1px solid var(--border);}
-.loc-btn{display:flex;align-items:flex-start;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
+.loc-btn{display:flex;align-items:flex-start;flex-direction:row;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
 .loc-btn:hover{background:var(--bg3);}
 .loc-btn.active{background:rgba(40,120,240,.1);}
 .loc-btn.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2878f0,#10b981);border-radius:3px 0 0 3px;}
 .loc-ico{width:26px;height:26px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border2);flex-shrink:0;}
-.loc-info{flex:1;min-width:0;text-align:right;}
-.loc-name-txt{font-size:13px;font-weight:600;color:#fff;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35;padding-left:38px;}
+.loc-info{flex:1;min-width:0;text-align:left;}
+.loc-name-txt{font-size:11.5px;font-weight:600;color:#fff;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35;padding-right:38px;}
 .loc-meta{font-size:10px;color:var(--muted2);margin-top:1px;}
-.zone-badge{position:absolute;top:9px;left:13px;font-family:var(--mono);font-size:9.5px;font-weight:700;color:#8aa0c0;background:rgba(138,160,192,.12);border:1px solid rgba(138,160,192,.25);border-radius:4px;padding:1px 5px;white-space:nowrap;}
+.zone-badge{position:absolute;top:9px;right:13px;font-family:var(--mono);font-size:9.5px;font-weight:700;color:#8aa0c0;background:rgba(138,160,192,.12);border:1px solid rgba(138,160,192,.25);border-radius:4px;padding:1px 5px;white-space:nowrap;}
 /* PARTS UNDER LOCATION */
 .loc-parts{display:none;padding:6px 13px 8px;background:var(--bg3);border-top:1px solid var(--border);}
 .loc-parts.open{display:flex;flex-wrap:wrap;gap:5px;}
@@ -269,7 +269,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
   </aside>
 
 <div class="tt" id="tt">
-  <div class="tt-title" id="tt-n" style="font-size:13px;text-align:right;direction:rtl;">—</div>
+  <div class="tt-title" id="tt-n" style="font-size:13px;text-align:left;direction:ltr;">—</div>
   <div class="tt-row"><span style="font-size:11px;color:lab(31.41% 0.1 -2.67);font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
   <div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Progress</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
 </div>
@@ -342,7 +342,7 @@ function setBasemap(n,btn){
   map.removeLayer(activeTile);activeTile=BASEMAPS[n];activeTile.addTo(map);
 }
 
-const LG={asphalt:L.layerGroup().addTo(map),interlock:L.layerGroup().addTo(map),parts:L.layerGroup()};
+const LG={parts:L.layerGroup()};
 LG.parts.addTo(map);
 let activeZone=null,activeLoc=null,activePart=null,activeFilter=null,activeStatus=null,allPartPolys=[];
 let mainChart=null;
@@ -473,7 +473,7 @@ function barColor(pct){
 function renderChart(labels,values,colors,onClickFn,fullLabels){
   const inner=document.getElementById("chart-canvas-inner");
   const wrap=document.getElementById("main-chart").closest(".chart-canvas-wrap");
-  const minPerBar=95; // أقل مسافة مريحة لكل عمود عشان الأسماء العربية الطويلة متتلزقش
+  const minPerBar=140; // minimum comfortable width per bar so long labels don't overlap
   const neededWidth=values.length*minPerBar;
   const availWidth=wrap?wrap.clientWidth:0;
   inner.style.width=neededWidth>availWidth?neededWidth+"px":"100%";
@@ -499,10 +499,7 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
       layout:{padding:{top:24}},
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{
-          title:c=>fullLabels?fullLabels[c[0].dataIndex]:c[0].label,
-          label:c=>c.parsed.y+"%"
-        }},
+        tooltip:{enabled:false},
         datalabels:{
           anchor:"end",
           align:"top",
@@ -628,7 +625,7 @@ let partsVisible=true;
 
 // DRAW
 function clearMap(){
-  LG.asphalt.clearLayers();LG.interlock.clearLayers();LG.parts.clearLayers();allPartPolys=[];
+  LG.parts.clearLayers();allPartPolys=[];
   map.removeLayer(LG.parts);map.addLayer(LG.parts);
   if(!partsVisible){map.removeLayer(LG.parts);}
 }
@@ -638,22 +635,6 @@ function drawLoc(loc,zoneName,locName,collectBounds){
   function addRingToBounds(ring){
     for(let i=0;i<ring.length;i++) bounds.push(ring[i]);
   }
-  // Asphalt
-  loc.asphalt.forEach(feat=>{
-    if(!feat)return;
-    feat.forEach(ring=>{
-      if(!ring||ring.length<3)return;
-      try{L.polygon(ring,{color:"#252d3a",weight:.6,fillColor:"#181e28",fillOpacity:.92}).addTo(LG.asphalt);if(collectBounds)addRingToBounds(ring);}catch(e){}
-    });
-  });
-  // Interlock
-  loc.interlock.forEach(feat=>{
-    if(!feat)return;
-    feat.forEach(ring=>{
-      if(!ring||ring.length<3)return;
-      try{L.polygon(ring,{color:"#404050",weight:.4,fillColor:"#2a2a3a",fillOpacity:.88}).addTo(LG.interlock);if(collectBounds)addRingToBounds(ring);}catch(e){}
-    });
-  });
   // Parts
   loc.parts.forEach(part=>{
     const c=PART_COLORS[part.name]||"#aaa";
@@ -758,7 +739,7 @@ function renderAggregated(title,sub,zones,clickable){
   html+=Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
     const t=totals[fk];
     const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
-    const pct=(t.total>0 && t.executed!=null)?Math.round((t.executed/t.total)*100):null;
+    const pct=(t.total>0 && t.executed!=null)?Math.floor((t.executed/t.total)*100):null;
     return fieldRowHTML(fk,fi,t.executed,t.front_work,t.total,pct,fc,clickable,activeFilter===fk);
   }).join("");
   document.getElementById("parts-detail").innerHTML=html;
@@ -789,7 +770,7 @@ document.getElementById("dp-title").style.marginTop="0px";
     Object.entries(GDB_DATA.fields).map(([fk,fi])=>{
       const t=totals[fk];
       const fc=FIELD_COLORS[fk]||{color:"#aaa",g:["#333","#aaa"]};
-      const pct=(t.total>0 && t.executed!=null)?Math.round((t.executed/t.total)*100):null;
+      const pct=(t.total>0 && t.executed!=null)?Math.floor((t.executed/t.total)*100):null;
       return fieldRowHTML(fk,fi,t.executed,t.front_work,t.total,pct,fc,false,false);
     }).join("");
   updatePartsLegend();
