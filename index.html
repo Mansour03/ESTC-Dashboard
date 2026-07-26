@@ -12,18 +12,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{
-  --bg:#000000;--bg2:#070707;--bg3:#0d0d0d;--bg4:#131313;
-  --border:#1a1a1a;--border2:#242424;
-  --text:#fff;--muted:#4a6080;--muted2:#8aa0c0;
-  --green:#1ec96e;--orange:#f08020;--red:#e03838;
-  --blue:#2878f0;--yellow:#d4b010;--purple:#7848e8;
-  --fw-color:#e0524a;
+  --bg:#050608;--bg2:#0a0c10;--bg3:#111318;--bg4:#181b22;
+  --border:#1c1f27;--border2:#282c36;
+  --text:#F5F6F8;--muted:#6B7280;--muted2:#9AA3B2;
+  --green:#10b981;--orange:#f59e0b;--red:#ef4444;
+  --blue:#3b82f6;--yellow:#eab308;--purple:#8b5cf6;
+  --fw-color:#f43f5e;
   --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;}
 /* HEADER */
-.hdr{height:52px;background:linear-gradient(90deg,#000000,#000000,#000000);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;position:relative;z-index:1000;}
+.hdr{height:52px;background:linear-gradient(90deg,#000000,#0a0c10,#000000);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;position:relative;z-index:1000;}
 .hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(40,120,240,.4),rgba(30,201,110,.4),rgba(40,120,240,.4),transparent);}
 .hdr-brand{display:flex;align-items:center;gap:12px;}
 .hdr-logo{width:32px;height:32px;background:linear-gradient(135deg,#0e30a0,#2878f0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#fff;box-shadow:0 0 18px rgba(40,120,240,.35);}
@@ -39,7 +39,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 /* HEADER PROGRESS */
 .hdr-progress{display:flex;align-items:center;gap:8px;}
 .hdr-progress-lbl{font-size:10px;color:#fff;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
-.hdr-progress-track{width:180px;height:6px;border-radius:99px;overflow:hidden;position:relative;background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 75%);}
+.hdr-progress-track{width:180px;height:6px;border-radius:99px;overflow:hidden;position:relative;background:linear-gradient(90deg,#ef4444 0%,#f59e0b 25%,#eab308 50%,#10b981 75%);}
 .hdr-progress-fill{position:absolute;top:0;right:0;bottom:0;height:100%;background:var(--bg4);border-radius:0 99px 99px 0;transition:width .4s;}
 .hdr-progress-pct{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green);min-width:30px;}
 /* STATUS STAT BOXES */
@@ -122,7 +122,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .loc-btn{display:flex;align-items:flex-start;flex-direction:row-reverse;gap:9px;padding:9px 13px;cursor:pointer;transition:background .15s;position:relative;}
 .loc-btn:hover{background:var(--bg3);}
 .loc-btn.active{background:rgba(40,120,240,.1);}
-.loc-btn.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2878f0,#1ec96e);border-radius:3px 0 0 3px;}
+.loc-btn.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2878f0,#10b981);border-radius:3px 0 0 3px;}
 .loc-ico{width:26px;height:26px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border2);flex-shrink:0;}
 .loc-info{flex:1;min-width:0;text-align:right;}
 .loc-name-txt{font-size:13px;font-weight:600;color:#fff;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35;padding-left:38px;}
@@ -270,7 +270,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 
 <div class="tt" id="tt">
   <div class="tt-title" id="tt-n" style="font-size:13px;text-align:right;direction:rtl;">—</div>
-  <div class="tt-row"><span style="font-size:11px;color:#8aa0c0;font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
+  <div class="tt-row"><span style="font-size:11px;color:lab(31.41% 0.1 -2.67);font-weight:bold;">Zone</span><span class="tt-val" id="tt-loc" style="font-size:12px;color:#fff;">—</span></div>
   <div class="tt-row"><span style="font-size:11px;color:rgb(106, 188, 202);font-weight:bold;">Progress</span><span class="tt-val" id="tt-td" style="font-size:12px;color:var(--green);">—</span></div>
 </div>
 
@@ -280,11 +280,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 Chart.register(ChartDataLabels);
 const PART_COLORS={"Part 1":"#e05555","Part 2":"#d4a017","Part 3":"#3a86e8","Part 4":"#27c47a","Part 5":"#8b5cf6"};
 const FIELD_COLORS={
-  Demolish:    {color:"#e03838",g:["#5a0808","#e03838"]},
+  Demolish:    {color:"#ef4444",g:["#5a0808","#ef4444"]},
   Excavation:  {color:"#b8611a",g:["#3a1e00","#b8611a"]},
-  Subgrade:    {color:"#f08020",g:["#5a2800","#f08020"]},
-  Aggregate_BC:{color:"#d4b010",g:["#483800","#d4b010"]},
-  Asphalt_BC:  {color:"#1ec96e",g:["#003828","#1ec96e"]},
+  Subgrade:    {color:"#f59e0b",g:["#5a2800","#f59e0b"]},
+  Aggregate_BC:{color:"#eab308",g:["#483800","#eab308"]},
+  Asphalt_BC:  {color:"#10b981",g:["#003828","#10b981"]},
   Curbstone:   {color:"#10c8d8",g:["#001838","#10c8d8"]},
   Interlock:   {color:"#2878f0",g:["#001858","#2878f0"]},
   Milling:     {color:"#7848e8",g:["#200848","#7848e8"]},
@@ -464,10 +464,10 @@ function wrapLabel(text){
 }
 
 function barColor(pct){
-  if(pct>=75) return "#1ec96e";
-  if(pct>=50) return "#d4b010";
-  if(pct>=25) return "#f08020";
-  return "#e03838";
+  if(pct>=75) return "#10b981";
+  if(pct>=50) return "#eab308";
+  if(pct>=25) return "#f59e0b";
+  return "#ef4444";
 }
 
 function renderChart(labels,values,colors,onClickFn,fullLabels){
@@ -483,12 +483,12 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
   const gradientFill=(context)=>{
     const {chart}=context;
     const {ctx,chartArea}=chart;
-    if(!chartArea) return "#e03838";
+    if(!chartArea) return "#ef4444";
     const g=ctx.createLinearGradient(0,chartArea.bottom,0,chartArea.top);
-    g.addColorStop(0,"#e03838");
-    g.addColorStop(0.25,"#f08020");
-    g.addColorStop(0.5,"#d4b010");
-    g.addColorStop(0.75,"#1ec96e");
+    g.addColorStop(0,"#ef4444");
+    g.addColorStop(0.25,"#f59e0b");
+    g.addColorStop(0.5,"#eab308");
+    g.addColorStop(0.75,"#10b981");
     return g;
   };
   mainChart=new Chart(ctx,{
@@ -512,7 +512,7 @@ function renderChart(labels,values,colors,onClickFn,fullLabels){
         }
       },
       scales:{
-        y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:10}},grid:{color:"#151618"}},
+        y:{beginAtZero:true,max:100,ticks:{color:"#8aa0c0",font:{size:10}},grid:{color:"#1b1a1a"}},
         x:{ticks:{color:"#e2e2e2",font:{size:10,weight:800,family:"'Inter',sans-serif"},maxRotation:0,minRotation:0,autoSkip:false},grid:{display:false}}
       },
       onClick:(evt,elems)=>{
@@ -712,10 +712,10 @@ function calcTotals(zones,fieldKey,valueType){
 }
 function pctGradient(pct){
   if(pct==null) return "#333";
-  if(pct>=80) return "linear-gradient(90deg,#003820,#1ec96e)";
-  if(pct>=50) return "linear-gradient(90deg,#483800,#d4b010)";
-  if(pct>=25) return "linear-gradient(90deg,#5a2800,#f08020)";
-  return "linear-gradient(90deg,#5a0808,#e03838)";
+  if(pct>=80) return "linear-gradient(90deg,#003820,#10b981)";
+  if(pct>=50) return "linear-gradient(90deg,#483800,#eab308)";
+  if(pct>=25) return "linear-gradient(90deg,#5a2800,#f59e0b)";
+  return "linear-gradient(90deg,#5a0808,#ef4444)";
 }
 
 function fieldRowHTML(fk,fi,exec,fw,total,pct,fc,clickable,highlighted){
@@ -734,7 +734,7 @@ function fieldRowHTML(fk,fi,exec,fw,total,pct,fc,clickable,highlighted){
     <div class="fn-val fn-fw">${fw!=null?Math.round(fw).toLocaleString():"—"}</div>
   </div>
 </div>
-    <div class="field-bar" style="background:linear-gradient(90deg,#e03838 0%,#f08020 25%,#d4b010 50%,#1ec96e 75%);position:relative;overflow:hidden;">
+    <div class="field-bar" style="background:linear-gradient(90deg,#ef4444 0%,#f59e0b 25%,#eab308 50%,#10b981 75%);position:relative;overflow:hidden;">
   <div style="position:absolute;top:0;right:0;bottom:0;width:${pct!=null?100-pct:100}%;background:var(--border2);border-radius:0 99px 99px 0;"></div>
 </div>
 <div class="field-pct" style="color:${pct!=null?barColor(pct):'#8aa0c0'}">${pct!=null?pct+"%":"—"}</div>
@@ -927,7 +927,7 @@ function selectZone(zoneName,btn){
   document.getElementById("dp-sub").textContent="No locations yet";
   document.getElementById("parts-detail").innerHTML = `
   <div style="position: relative; width: 100%; height: 100%; min-height: 150px;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #e03838; font-size: 13px; width: 100%; padding: 0 20px;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ef4444; font-size: 13px; width: 100%; padding: 0 20px;">
        No traffic diversions prepared for this zone yet ⚠️
     </div>
   </div>
