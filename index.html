@@ -33,9 +33,28 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 .live-pill{display:flex;align-items:center;gap:5px;font-size:10px;padding:3px 10px;border-radius:20px;background:rgba(30,201,110,.08);color:var(--green);border:1px solid rgba(30,201,110,.2);}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-.hdr-date{font-family:var(--mono);font-size:11px;color:var(--muted2);}
 .reset-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:10px;cursor:pointer;font-family:var(--font);font-weight:600;transition:all .15s;}
 .reset-btn:hover{background:var(--bg3);color:#fff;border-color:var(--blue);}
+/* DATE PICKER / CALENDAR */
+.date-picker-wrap{position:relative;}
+.hdr-date{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--muted2);background:transparent;border:1px solid var(--border2);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all .15s;}
+.hdr-date:hover{border-color:var(--blue);color:#fff;}
+.hdr-date svg{flex-shrink:0;}
+.last-update{font-size:10px;color:var(--muted2);white-space:nowrap;}
+.last-update b{color:var(--muted2);font-weight:600;}
+.cal-popup{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px;width:230px;box-shadow:0 12px 30px rgba(0,0,0,.5);z-index:2000;}
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:11px;font-weight:700;color:#fff;}
+.cal-hdr button{background:transparent;border:1px solid var(--border2);color:var(--muted2);border-radius:4px;width:22px;height:22px;cursor:pointer;}
+.cal-hdr button:hover{color:#fff;border-color:var(--blue);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dow{font-size:9px;color:var(--muted);text-align:center;padding:2px 0;font-weight:700;}
+.cal-day{font-size:10px;text-align:center;padding:5px 0;border-radius:5px;color:var(--muted);}
+.cal-day.no-data{opacity:.3;}
+.cal-day.has-data{color:#fff;background:rgba(40,120,240,.12);cursor:pointer;font-weight:700;}
+.cal-day.has-data:hover{background:rgba(40,120,240,.3);}
+.cal-day.selected{background:var(--blue);color:#fff;}
+.cal-note{display:none;margin-top:8px;padding:7px 8px;border-radius:6px;background:rgba(224,56,56,.1);border:1px solid rgba(224,56,56,.28);color:#f3a0a0;font-size:9.5px;line-height:1.4;}
+.live-pill.snap-mode{background:rgba(240,128,32,.1);color:var(--orange);border-color:rgba(240,128,32,.28);}
 /* HEADER PROGRESS */
 .hdr-progress{display:flex;align-items:center;gap:8px;}
 .hdr-progress-lbl{font-size:10px;color:#fff;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
@@ -197,9 +216,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
     <span class="hdr-progress-pct" id="hdr-progress-pct">0%</span>
   </div>
   <div class="hdr-right">
-    <div class="hdr-date" id="hdr-date">—</div>
+    <div class="last-update" id="last-update"></div>
     <button class="reset-btn" onclick="resetView()">⟲ Overview</button>
-    <div class="live-pill"><div class="live-dot"></div>Live</div>
+    <div class="live-pill" id="live-pill"><div class="live-dot"></div>Live</div>
+    <div class="date-picker-wrap">
+      <button class="hdr-date" id="hdr-date" onclick="toggleCalendar()">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="hdr-date-text">—</span>
+      </button>
+      <div class="cal-popup" id="cal-popup">
+        <div class="cal-hdr">
+          <button onclick="calNav(-1)">‹</button>
+          <span id="cal-month-lbl">—</span>
+          <button onclick="calNav(1)">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-note" id="cal-note"></div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1253,12 +1287,155 @@ function hideTT(){tt.style.display="none";}
 map.on("mousemove",e=>{if(tt.style.display==="block"){tt.style.left=(e.originalEvent.clientX+14)+"px";tt.style.top=(e.originalEvent.clientY-10)+"px";}});
 
 
-function tick(){document.getElementById("hdr-date").textContent=new Date().toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});}
-tick();setInterval(tick,60000);
+/* ══ SNAPSHOTS / DATE CALENDAR ══ */
+let SNAPSHOT_DATES = [];      // ["2026-07-20","2026-07-27",...] جاي من manifest.json
+let CURRENT_SNAPSHOT = null;  // التاريخ المعروض حاليا، null = آخر تحديث (Live)
+let LIVE_DATA = null;         // نسخة من الداتا الأصلية (آخر تحديث) اللي جاية من data.js
+let calViewYear, calViewMonth;
+let manifestLoadFailed = false;
+
+function timeAgo(iso){
+  if(!iso) return null;
+  const then = new Date(iso);
+  const diffSec = Math.floor((Date.now()-then.getTime())/1000);
+  if(diffSec < 60) return "just now";
+  const mins = Math.floor(diffSec/60);
+  if(mins < 60) return `${mins} minute${mins>1?"s":""} ago`;
+  const hrs = Math.floor(mins/60);
+  if(hrs < 24) return `${hrs} hour${hrs>1?"s":""} ago`;
+  const days = Math.floor(hrs/24);
+  if(days===1) return "yesterday";
+  return `${days} days ago`;
+}
+
+function updateLastUpdateLabel(){
+  const el = document.getElementById("last-update");
+  const iso = GDB_DATA && GDB_DATA.generated_at;
+  if(!iso){ el.textContent = ""; return; }
+  const d = new Date(iso);
+  const dateStr = d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+  el.innerHTML = `Last update: <b>${timeAgo(iso)}</b> · ${dateStr}`;
+  el.title = d.toLocaleString("en-US");
+}
+setInterval(updateLastUpdateLabel, 60000);
+
+function setHeaderDateLabel(dateStr, isLive){
+  const el   = document.getElementById("hdr-date-text");
+  const pill = document.getElementById("live-pill");
+  el.textContent = dateStr ? new Date(dateStr+"T00:00:00").toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"}) : "—";
+  if(isLive){ pill.innerHTML='<div class="live-dot"></div>Live'; pill.classList.remove("snap-mode"); }
+  else{ pill.innerHTML='📅 Snapshot'; pill.classList.add("snap-mode"); }
+}
+
+async function initSnapshots(){
+  LIVE_DATA = GDB_DATA;
+  try{
+    const res = await fetch("snapshots/manifest.json");
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    SNAPSHOT_DATES = await res.json();
+  }catch(e){
+    SNAPSHOT_DATES = [];
+    manifestLoadFailed = true;
+    console.warn("تعذر تحميل snapshots/manifest.json — لو بتفتح index.html بدبل كليك (file://) الفetch هيترفض. شغّل عن طريق سيرفر محلي أو من على GitHub Pages.", e);
+  }
+  SNAPSHOT_DATES.sort();
+  const latest = SNAPSHOT_DATES[SNAPSHOT_DATES.length-1] || null;
+  setHeaderDateLabel(latest, true);
+  updateLastUpdateLabel();
+  const base = latest ? new Date(latest+"T00:00:00") : new Date();
+  calViewYear = base.getFullYear(); calViewMonth = base.getMonth();
+}
+
+function toggleCalendar(){
+  const pop = document.getElementById("cal-popup");
+  const opening = pop.style.display !== "block";
+  pop.style.display = opening ? "block" : "none";
+  if(opening) renderCalendar();
+}
+document.addEventListener("click", e=>{
+  const wrap = document.querySelector(".date-picker-wrap");
+  if(wrap && !wrap.contains(e.target)) document.getElementById("cal-popup").style.display="none";
+});
+
+function calNav(dir){
+  calViewMonth += dir;
+  if(calViewMonth<0){calViewMonth=11;calViewYear--;}
+  if(calViewMonth>11){calViewMonth=0;calViewYear++;}
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const grid = document.getElementById("cal-grid");
+  const lbl  = document.getElementById("cal-month-lbl");
+  const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  lbl.textContent = `${monthNames[calViewMonth]} ${calViewYear}`;
+  grid.innerHTML="";
+  ["S","M","T","W","T","F","S"].forEach(d=>{
+    const c=document.createElement("div"); c.className="cal-dow"; c.textContent=d; grid.appendChild(c);
+  });
+  const startDow = new Date(calViewYear, calViewMonth, 1).getDay();
+  const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
+  for(let i=0;i<startDow;i++) grid.appendChild(document.createElement("div"));
+  for(let day=1; day<=daysInMonth; day++){
+    const dateStr = `${calViewYear}-${String(calViewMonth+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const has = SNAPSHOT_DATES.includes(dateStr);
+    const cell = document.createElement("div");
+    cell.textContent = day;
+    cell.className = "cal-day" + (has?" has-data":" no-data") + (dateStr===CURRENT_SNAPSHOT?" selected":"");
+    if(has) cell.onclick = ()=>selectSnapshot(dateStr);
+    grid.appendChild(cell);
+  }
+  const note = document.getElementById("cal-note");
+  if(manifestLoadFailed){
+    note.style.display = "block";
+    note.textContent = "⚠ Couldn't load history — open the dashboard via a local server or your live GitHub Pages link, not by double-clicking the file.";
+  } else {
+    note.style.display = "none";
+  }
+}
+
+async function selectSnapshot(dateStr){
+  document.getElementById("cal-popup").style.display="none";
+  const latest = SNAPSHOT_DATES[SNAPSHOT_DATES.length-1];
+  if(dateStr === latest){
+    GDB_DATA = LIVE_DATA;
+    CURRENT_SNAPSHOT = null;
+    setHeaderDateLabel(latest, true);
+  } else {
+    const res = await fetch(`snapshots/${dateStr}.json`);
+    GDB_DATA = await res.json();
+    CURRENT_SNAPSHOT = dateStr;
+    setHeaderDateLabel(dateStr, false);
+  }
+  updateLastUpdateLabel();
+  reloadDashboard();
+}
+
+function reloadDashboard(){
+  activeLoc=null; activePart=null; activeZone=null; activeStatus=null;
+  document.querySelectorAll(".loc-btn").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".loc-parts").forEach(e=>e.classList.remove("open"));
+  document.querySelectorAll(".part-pill").forEach(e=>e.classList.remove("active-part"));
+  document.querySelectorAll(".zone-card").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".stat-box").forEach(e=>e.classList.remove("status-on"));
+  clearMap();
+  buildZones(); buildLocList();
+  Object.keys(GDB_DATA.zones).forEach(zName=>{
+    Object.keys(GDB_DATA.zones[zName].locations||{}).forEach(lName=>{
+      drawLoc(GDB_DATA.zones[zName].locations[lName], zName, lName, false);
+    });
+  });
+  renderAggregated("Overall Progress","All Zones",GDB_DATA.zones,true);
+  updateHeaderStats();
+  showZonesChart();
+  map.flyTo(RIYADH.center, RIYADH.zoom, {duration:.6});
+  document.getElementById("map-info").textContent="Riyadh Overview";
+}
 
 buildZones();buildLocList();
 document.getElementById("zone-btn-ALL").click();
 updateHeaderStats();
+initSnapshots();
 </script>
 </body>
 </html>
