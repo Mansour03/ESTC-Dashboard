@@ -1321,7 +1321,7 @@ setInterval(updateLastUpdateLabel, 60000);
 function setHeaderDateLabel(dateStr, isLive){
   const el   = document.getElementById("hdr-date-text");
   const pill = document.getElementById("live-pill");
-  el.textContent = dateStr ? new Date(dateStr+"T00:00:00").toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"}) : "—";
+  el.textContent = dateStr ? new Date(dateStr+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}) : "—";
   if(isLive){ pill.innerHTML='<div class="live-dot"></div>Live'; pill.classList.remove("snap-mode"); }
   else{ pill.innerHTML='📅 Snapshot'; pill.classList.add("snap-mode"); }
 }
