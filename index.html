@@ -1247,6 +1247,8 @@ function resetView() {
   document.querySelectorAll(".part-pill").forEach(e => e.classList.remove("active-part"));
   document.querySelectorAll(".zone-card").forEach(e => e.classList.remove("active")); // لو عندك كروت زونات
   document.querySelectorAll(".stat-box").forEach(e => e.classList.remove("status-on"));
+  document.querySelectorAll(".zone-btn").forEach(b => b.classList.remove("on"));
+  document.getElementById("zone-btn-ALL")?.classList.add("on");
   buildLocList();
 
   // 3. تنظيف الخريطة وإعادة رسم "كل شيء" بدون أي فلترة
